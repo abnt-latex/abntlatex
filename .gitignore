@@ -1,0 +1,29 @@
+# --- Latex ---
+# ---
+*.aux
+*.lof
+*.out
+*.log
+*.toc
+*.lot
+*.glo
+*.gls
+*.hd
+*.ilg
+
+# --- Intermediate documents ---
+# ---
+*.pdf
+
+# --- bibtex ---
+# ---
+*.bbl
+*.blg
+
+# --- backref ---
+# ---
+*.brf
+
+# --- Latex Class ---
+# ---
+*.cls

@@ -1,0 +1,588 @@
+% \iffalse meta-comment
+%
+% Copyright (C) 2024 abntlatex
+%
+% This file may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3 of this license or (at your option) any later
+% version. The latest version of this license is in:
+%
+% https://www.latex-project.org/lppl/
+%
+% and version 1.3c or later is part of all distributions of
+% LaTeX version 2008-05-04 or later.
+%
+% \fi
+%
+% \iffalse
+%
+%<driver>\ProvidesFile{abntlatex.dtx}
+%
+%<class>\NeedsTeXFormat{LaTeX2e}
+%<class>\ProvidesClass{abntlatex}
+%<class>    [2024-07-17 v1.0 .dtx ABNT Latex]
+%
+%<*driver>
+  \listfiles
+  \documentclass{ltxdoc}
+  % Packages
+  \usepackage[brazil]{babel}
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{xcolor}
+  \usepackage{indentfirst}
+  \usepackage{hypdoc}
+  
+  %
+  \EnableCrossrefs
+  %\CodelineIndex
+  \RecordChanges
+  \begin{document}
+    \DocInput{abntlatex.dtx}
+  \end{document}
+%</driver>
+% \fi
+%
+% \iffalse
+%
+%<*class>
+\PassOptionsToClass{a4paper, 12pt}{article}%
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
+\ProcessOptions\relax
+\LoadClass{article}
+%</class>
+%
+% \fi
+% ^^A --- Configuration Documentation ---
+% ^^A ---
+% 
+% \makeatletter
+%
+%   \renewcommand{\ps@myheadings}{%
+%     \renewcommand\@oddhead{\vbox{\rightmark\hfill\thepage\vskip3\p@\hrule}}%
+%     \renewcommand\@evenhead{}%
+%     \renewcommand\@oddfoot{}%
+%     \renewcommand\@evenfoot{}%
+%   }
+%
+%   \pagestyle{myheadings}
+%
+%   \markright{abntlatex.cls}
+%
+%   \renewenvironment{theglossary}{%
+%     \glossary@prologue%
+%     \GlossaryParms \let\item\@idxitem \ignorespaces}%
+%
+%   \def\glossary@prologue{%
+%     \section*{{Histórico de alterações}}%
+%   }%
+%
+%   \def\generalname{Geral}%
+%
+% \makeatother
+%
+% ^^A --- end
+%
+% \changes{v1.0}{2024/07/17}{Versão inicial}
+% 
+% \title{A Classe \textbf{ABNT\LaTeX}\\Esse documento corresponde a \textbf{abntlatex.cls}.}
+% \author{abntlatex}
+% 
+% \maketitle
+% 
+% \PrintChanges
+%
+% \tableofcontents
+%
+% \begin{center}
+%   \par\rule{0.3\textwidth}{0.4pt}
+% \end{center}
+% \thispagestyle{empty}
+% \newpage
+%
+% \section{Introdução}
+%
+%   Put text here.
+%
+% \section{Instalação}
+%   O \textbf{ABNT\LaTeX} consiste em uma classe \textbf{abntlatex}.
+%
+%   Descrição dos arquivos necessários:
+%   \begin{verbatim}
+%     abntlatex.ins
+%     abntlatex.dtx
+%     abntlatex.pdf   # Essa ducumentação :)
+%   \end{verbatim}
+%   Antes de iniciar a instalação certifique-se que a classe \textbf{article} esteja instalada.
+%
+%   \subsection{abntlatex.cls}
+%     A opção \textsl{class}, \textbf{abntlatex.cls}, é obtida rodando o comando \LaTeX\space no arquivo \textbf{abntlatex.ins}. 
+%     \begin{verbatim}
+%       latex abntlatex.ins
+%     \end{verbatim}
+%   \subsection{abntlatex.pdf}
+%     O arquivo de documentação, \textbf{abntlatex.pdf}, é gerado seguindo os seguintes passos:
+%     \begin{verbatim}
+%       pdflatex   abntlatex.dtx
+%       makeindex -s gglo.ist -o abntlatex.gls abntlatex.glo
+%       pdflatex   abntlatex.dtx
+%       pdflatex   abntlatex.dtx
+%     \end{verbatim}
+% \section{Opções para a classe \textbf{abntlatex}}
+%   As opções que a classe aceita são as mesmas que a classe \textbf{article} aceita, sendo que a opção \textbf{a4paper} e \textbf{12pt} são enviadas previamente.
+%
+% \section{Pacotes usados pela classe}
+%   \begin{macro}{geometry (package)}
+%     Pacote para configurar as margens do documento conforme a NBR 14724/2011.
+%    \begin{macrocode}
+\RequirePackage[a4paper, 
+                top    = 3.0cm, 
+                bottom = 2.0cm, 
+                left   = 3.0cm, 
+                right  = 2.0cm]{geometry}
+%    \end{macrocode}
+%   \end{macro}
+%
+%   \begin{macro}{mathptmx (package)}
+%   \begin{macro}{babel (package)}
+%   \begin{macro}{fontenc (package)}
+%   \begin{macro}{inputenc (package)}
+%     Conjunto de pacotes para configurar a fonte, caracteres e os títulos para o português brasileiro, além de selecionar a fonte \textbf{Times New Roman}.
+%    \begin{macrocode}
+\RequirePackage{mathptmx}
+\RequirePackage[brazil]{babel}
+\RequirePackage[T1]{fontenc}
+\RequirePackage[utf8]{inputenc}	
+%    \end{macrocode}
+%   \end{macro}
+%   \end{macro}
+%   \end{macro}
+%   \end{macro}
+%   \begin{macro}{indentfirst (package)}
+%   \begin{macro}{microtype (package)}
+%     Pacotes para melhorar a indentação do texto, adicionar um espaçamento no primeiro paragrafo da seção e para melhorar a justificação dos parágrafos, respectivamente.
+%    \begin{macrocode}
+\RequirePackage{indentfirst}
+\RequirePackage{microtype}
+%    \end{macrocode}
+%   \end{macro}
+%   \end{macro}
+%
+%   \begin{macro}{hyperref (package)}
+%   \begin{macro}{backref (package)}
+%     Pacotes para configurar as referências e citações do texto.
+%    \begin{macrocode}
+\RequirePackage{hyperref}
+\RequirePackage[brazilian, hyperpageref]{backref}	
+%    \end{macrocode}
+%   \end{macro}
+%   \end{macro}
+%
+% \section{Descrição dos comandos}
+%
+%   \DescribeMacro{\pretext}
+%     Configuração de espaçamento, segundo a NBR 14724/2011, e de paginação, segundo a NBR 14724/2011, para os elementos pré-textuais.
+%
+%   \DescribeMacro{\maketitle}
+%     Capa conforme a NBR 14724/2011, é possível utilizar os seguintes comandos para customização dos elementos: |\university|\marg{text}, |\subtitle|\marg{text}, |\predate|\marg{text}, além desses comandos foram utilizados os comandos padrões da classe \textit{article} para construção da capa, |\title|\marg{text}, |\author|\marg{text}, |\date|\marg{text}.
+%
+%   \DescribeMacro{\coverpage}
+%     Folha de rosto conforme a NBR 14724/2011, além dos comandos utilizados para customizar os elementos da capa é possível usar: |\documenttype|\marg{text}, |\preamble|\marg{text}, |\supervisor|\marg{text}, |\cosupervisor|\marg{text}. 
+%
+%     {\color{red}\textbf{TODO:}} Adicionar 4.2.1.1.2: Verso. 
+%
+%   \DescribeEnv{abstract (env)}
+%     Resumo na língua vernácula conforme a NBR 14724/2011 e a NBR6028/2021, é possível utilizar o comando |\keywords|\marg{text} para configurar as palavras-chave do documento.
+%
+%   \DescribeMacro{\fontfigure}
+%     Comando para auxiliar na implementação da fonte de figuras, conforme a NBR 14724/2011, |\fontfigure|\marg{text}, adicionando o conteúdo em tamanho reduzido, e o texto "\textit{Fonte:\space}", como é possível ver no exemplo:
+%
+%   \DescribeMacro{\listoffigures}
+%     Lista de ilustrações conforme a NBR 14724/2011.
+%
+%   \DescribeMacro{\listoftables}
+%     Lista de tabelas conforme a NBR 14724/2011.
+%
+%   \DescribeMacro{\tableofcontents}
+%     Sumário conforme a NBR 14724/2011 e NBR 6027/2012.
+%
+%   \DescribeMacro{\thebibliography}
+%     Referências conforme a NBR 14724/2011 e a NBR 6023/2018.
+%
+%   \DescribeMacro{\maintext}
+%      Configuração de espaçamento, segundo a NBR 14724/2011, e de paginação, segundo a NBR 14724/2011, para os elementos textuais.
+%
+%   \DescribeMacro{\cite}
+%     Configuração da exibição da citação de referência no texto conforme a NBR 14724/2011 e a NBR 10520/2023, |\cite|\marg{text}.
+%
+%   \DescribeMacro{\section}
+%     Título das seções primarias, com a numeração progressiva, conforme a NBR 14724/2011 e a NBR 6024/2012, |\section|\marg{text}.
+%
+%   \DescribeMacro{\subsection}
+%     Título das seções secundarias, com a numeração progressiva, conforme a NBR 14724/2011 e a NBR 6024/2012, |\subsection|\marg{text}.
+
+%   \DescribeMacro{\subsubsection}
+%     Título das seções terciarias, com a numeração progressiva, conforme a NBR 14724/2011 e a NBR 6024/2012, |\subsubsection|\marg{text}.
+%
+%   \DescribeMacro{\backtext}
+%     Configuração de espaçamento, segundo a NBR 14724/2011, de paginação, segundo a NBR 14724/2011, e de construção das referências, segundo a NBR 14724/2011 e a NBR 10520/2023, para os elementos pós-textuais.
+%
+%   \DescribeMacro{\biblabel}
+%   Configuração da exibição do número da referência, segundo a NBR 14724/2011 e a NBR 10520/2023.
+%
+% \section{Implementação dos comandos}
+%   \subsection{Elementos pré-textuais}
+%     \begin{macro}{\pretext}
+%       Configurações pré-texto.
+%    \begin{macrocode}
+\newcommand\pretext{%
+  \frenchspacing%
+  \pagestyle{empty}%
+  \linespread{1.25}%
+}
+%    \end{macrocode}
+%     \end{macro}
+%     \begin{macro}{\university}
+%     \begin{macro}{\subtitle}
+%     \begin{macro}{\predate}
+%     \begin{macro}{\documenttype}
+%     \begin{macro}{\preamble}
+%     \begin{macro}{\supervisor}
+%     \begin{macro}{\cosupervisor}
+%     \begin{macro}{\keywords}
+%       Comandos para implementar a capa e a folha de rosto, todos os comandos são do tipo |\command|\marg{text}.
+%    \begin{macrocode}
+\newcommand*{\university}[1]{\gdef\@university{#1}}%
+\newcommand*{\@university}{\university}%
+%    \end{macrocode}
+%    \begin{macrocode}
+\newcommand*{\subtitle}[1]{\gdef\@subtitle{#1}}%
+\newcommand*{\@subtitle}{\subtitle}%
+%    \end{macrocode}
+%    \begin{macrocode}
+\newcommand*{\predate}[1]{\gdef\@predate{#1}}%
+\newcommand*{\@predate}{\predate}%
+%    \end{macrocode}
+%    \begin{macrocode}
+\newcommand*{\documenttype}[1]{\gdef\@documenttype{#1}}%
+\newcommand*{\@documenttype}{\documenttype}%
+%    \end{macrocode}
+%    \begin{macrocode}
+\newcommand*{\preamble}[1]{\gdef\@preamble{#1}}%
+\newcommand*{\@preamble}{\preamble}%
+%    \end{macrocode}
+%    \begin{macrocode}
+\newcommand*{\supervisor}[1]{\gdef\@supervisor{#1}}%
+\newcommand*{\@supervisor}{\supervisor}%
+%    \end{macrocode}
+%    \begin{macrocode}
+\newcommand*{\cosupervisor}[1]{\gdef\@cosupervisor{#1}}%
+\newcommand*{\@cosupervisor}{\cosupervisor}%
+%    \end{macrocode}
+%    \begin{macrocode}
+\newcommand*{\keywords}[1]{\gdef\@keywords{#1}}%
+\newcommand*{\@keywords}{\keywords}%
+%    \end{macrocode}
+%     \end{macro}
+%     \end{macro}
+%     \end{macro}
+%     \end{macro}
+%     \end{macro}
+%     \end{macro}
+%     \end{macro}
+%     \end{macro}
+%
+%     \begin{macro}{\maketitle}
+%       Construção da capa, realiza a remoção da numeração da pagina, centralização horizontal do conteúdo e o título e subtítulo são centralizados verticalmente no meio da pagina independente das informações que o precede, utilizando uma \textbf{minipage}. {\color{red}\textbf{TODO:}} Pode acabar ficando sobrescrito pelos autores. Para a adição dos autores foi utilizada uma tabela.
+%    \begin{macrocode}
+\renewcommand{\maketitle}{%
+  \begin{center}%
+    \begin{minipage}[t][0.5\textheight]{\textwidth}%
+      \centering
+      {\large\@university\par}%
+      \vspace*{2cm}%
+      {\large\begin{tabular}[t]{c}%
+        \@author%
+      \end{tabular}\par}%
+        
+      \vspace*{\fill}%
+      {\LARGE\@title\par}%
+      {\large\@subtitle\par}%
+    \end{minipage}%
+
+    \vspace*{\fill}%
+    {\normalsize\@predate\par}%
+    {\normalsize\@date}%
+  \end{center}%
+  \newpage%
+}
+%    \end{macrocode}
+%     \end{macro}
+%
+%     \begin{macro}{\coverpage}
+%       Construção da folha de rosto, realiza a remoção da numeração da pagina, centralização horizontal do conteúdo e desloca as informações do preambulo, tipo de documento e universidade para a direita sem que o texto exceda o centro da pagina.
+%    \begin{macrocode}
+\newcommand{\coverpage}{%
+  \begin{center}%
+    \begin{minipage}[t][0.33\textheight]{\textwidth}%
+      \centering%
+      {\normalsize\begin{tabular}[t]{c}%
+        \@author%
+      \end{tabular}\par}%
+      \vspace*{\fill}%
+
+      {\LARGE\@title\par}%
+      {\large\@subtitle\par}%
+    \end{minipage}
+    \vspace*{\fill}%
+      
+    {\hspace{.45\textwidth}
+    \begin{minipage}[c]{0.5\textwidth}%
+      \linespread{1.0}%
+      {\small\@documenttype\par}%
+      {\small\@preamble\par}%
+      {\small\@university\par}%
+    \vspace*{\fill}%
+    \end{minipage}\par}%
+    \vspace*{\fill}%
+
+    {\normalsize Orientador: \@supervisor \par}%
+    {\normalsize Coorientador: \@cosupervisor \par}%
+    \vspace*{\fill}%
+
+    {\normalsize\@predate\par}%
+    {\normalsize\@date}%
+  \end{center}%
+  \newpage%
+}
+%    \end{macrocode}
+%     \end{macro}
+%
+%     \begin{environment}{abstract (env)}
+%       Construção do resumo, realiza a centralização horizontal do título, além de adicionar um campo para as palavras-chave. {\color{red}\textbf{TODO:}} Deixar keywords como uma lista de palavras e adicionar o ponto e vírgula de forma automática.
+%    \begin{macrocode}
+\renewenvironment{abstract}{%
+  \begin{center}%
+    \textbf{\Large\abstractname\vspace{\z@}}%
+  \end{center}%
+}{%
+  {\par\null\par\noindent\textbf{Palavras-chave: }}%
+  \@keywords.
+\newpage%
+}
+%    \end{macrocode}
+%     \end{environment}
+%
+%     \begin{macro}{\listoffigures}
+%     \begin{macro}{\l@figure}
+%       Construção da lista de ilustrações.
+%
+%    \begin{macrocode}
+\addto\captionsbrazil{%
+  \renewcommand{\listfigurename}{{Lista de Ilustrações}}%
+}%
+
+\renewcommand\listoffigures{%
+  {\centering\section*{\listfigurename}}%
+
+  {%
+    \let\oldnumberline\numberline% TODO: Corrigir o aviso
+    \renewcommand{\numberline}[1]{\figurename~\oldnumberline{%
+      #1\hfill\textendash\hfill}%
+    }%
+    \@starttoc{lof}%
+  }%
+  \newpage
+}
+\renewcommand*\l@figure[2]{\@dottedtocline{1}{\z@}{2.3em}{#1}{#2}}%
+%    \end{macrocode}
+%     \end{macro}
+%     \end{macro}
+%
+%     \begin{macro}{\listoftables}
+%     \begin{macro}{\l@table}
+%       Construção da lista de tabelas.
+%
+%    \begin{macrocode}
+\renewcommand\listoftables{%
+  {\centering\section*{\listtablename}}%
+
+  {%
+    \let\oldnumberline\numberline% TODO: Corrigir o aviso
+    \renewcommand\numberline[1]{\tablename~{#1\hfill\textendash\hfill}}%
+    \@starttoc{lot}%
+  }%
+  \newpage
+}
+\renewcommand*\l@table[2]{\@dottedtocline{1}{\z@}{2.3em}{#1}{#2}}%
+%    \end{macrocode}
+%     \end{macro}
+%     \end{macro}
+%
+%     \begin{macro}{\tableofcontents}
+%     \begin{macro}{\l@section}
+%     \begin{macro}{\l@subsection}
+%     \begin{macro}{\l@subsubsection}
+%     \begin{macro}{\@tocrmarg}
+%       Construção do sumário.
+%       TODO: Arrumar o espaçamento de quando ocorre a quebra de linha.
+%       TODO: Ajustar o espaçamento dos pontos.
+%       TODO: Ver 6.1 NBR 6027/2012.
+%
+%    \begin{macrocode}
+\renewcommand\@tocrmarg{2.0cm}
+
+\renewcommand\tableofcontents{%
+  {\centering\section*{\contentsname}}%
+
+  \@starttoc{toc}%
+  \newpage
+}
+%    \end{macrocode}
+%       Cria um comprimento para definir o espaçamento para a direita do conteúdo do sumário.
+%    \begin{macrocode}
+\newlength{\@sizecontentnumber}%
+\settowidth{\@sizecontentnumber}{0.0.0\quad}%
+%    \end{macrocode}
+%       Configura as linhas do sumário respeitando a hierarquia da formatação das seções.
+%    \begin{macrocode}
+\renewcommand*\l@section[2]{\@dottedtocline{1}{\z@}%
+  {\@sizecontentnumber}{\bfseries\slshape#1}{#2}%
+}%
+\renewcommand*\l@subsection[2]{\@dottedtocline{1}{\z@}%
+  {\@sizecontentnumber}{\bfseries#1}{#2}%
+}%
+\renewcommand*\l@subsubsection[2]{\@dottedtocline{1}{\z@}%
+  {\@sizecontentnumber}{#1}{#2}%
+}%
+%    \end{macrocode}
+%     \end{macro}
+%     \end{macro}
+%     \end{macro}
+%     \end{macro}
+%     \end{macro}
+%
+%   \subsection{Elementos textuais}
+%     \begin{macro}{\maintext}
+%       Configuração dos elementos textuais.
+%    \begin{macrocode}
+\newcommand\maintext{%
+  \frenchspacing%
+  \pagestyle{myheadings}%
+  \linespread{1.25}%
+}
+%    \end{macrocode}
+%     \end{macro}
+%
+%     \begin{macro}{\cite}
+%     \begin{macro}{\@cite}
+%       Configuração das citações, para o comando |\cite|\marg{text}.
+%    \begin{macrocode}
+\renewcommand*{\@cite}[1]{(#1)}
+%    \end{macrocode}
+%     \end{macro}
+%     \end{macro}
+%
+%     \begin{macro}{\section}
+%     \begin{macro}{\subsection}
+%     \begin{macro}{\subsubsection}
+%       Construção dos títulos das seções, respeitando a hierarquia da formatação das seções.
+%    \begin{macrocode}
+\renewcommand\section{%
+  \@startsection{section}{1}{\z@}%
+  {\z@}%
+  {12pt}%
+  {\normalfont\Large\bfseries\slshape}%
+}
+%    \end{macrocode}
+%    \begin{macrocode}
+\renewcommand\subsection{%
+  \@startsection{subsection}{2}{\z@}%
+  {-12pt}%
+  {12pt}%
+  {\normalfont\large\bfseries}%
+}
+%    \end{macrocode}
+%    \begin{macrocode}
+\renewcommand\subsubsection{%
+  \@startsection{subsubsection}{3}{\z@}%
+  {-12pt}%
+  {12pt}%
+  {\normalfont\large}%
+}
+%    \end{macrocode}
+%     \end{macro}
+%     \end{macro}
+%     \end{macro}
+%
+%     \begin{macro}{\fontfigure}
+%    \begin{macrocode}
+\newcommand\fontfigure[1]{\caption*{\small Fonte: #1}}
+%    \end{macrocode}
+%     \end{macro}
+%
+%   \subsection{Elementos pós-textuais}
+%
+%     \begin{macro}{\backtext}
+%       Configuração dos elementos pós-textuais.
+%     \begin{macrocode}
+\newcommand\backtext{%
+  \frenchspacing%
+  \bibliographystyle{unsrt}%
+  \pagestyle{myheadings}%
+  \linespread{1.0}%
+}
+%    \end{macrocode}
+%     \end{macro}
+%
+%     \begin{macro}{\biblabel}
+%     \begin{macro}{\@biblabel}
+%       Configuração das referência.
+%    \begin{macrocode}
+\renewcommand*{\@biblabel}[1]{\footnotemark[#1]}
+%    \end{macrocode}
+%     \end{macro}
+%     \end{macro}
+%
+%     \begin{macro}{\thebibliography}
+%     \begin{macro}{\backref}
+%     \begin{macro}{\backrefalt}
+%       Configuração da bibliografia.      
+%    \begin{macrocode}
+\def\thebibliography#1{%
+  \newpage%
+  \phantomsection%
+  \addcontentsline{toc}{section}{\protect\numberline{}\refname}%
+
+  {\centering\section*{\refname}}%
+  \list{\@biblabel{\arabic{enumi}}}%
+    {\settowidth\labelwidth{(#1)}%
+      \leftmargin\labelwidth\advance\leftmargin\labelsep%
+        \usecounter{enumi}%
+    }%
+  \def\newblock{\hskip .11em plus .33em minus .07em}%
+  \sloppy\clubpenalty4000\widowpenalty4000\sfcode`\.=1000\relax%
+}
+%    \end{macrocode}
+%       Texto padrão antes do número das páginas
+%    \begin{macrocode}
+\renewcommand{\backref}{}
+%    \end{macrocode}
+%       Define os textos no final da citação
+%    \begin{macrocode}
+\renewcommand*{\backrefalt}[4]{
+  \ifcase #1
+    Nenhuma citação no texto.
+  \or
+    Citado na página #2.
+  \else
+    Citado #1 vezes nas páginas #2.
+  \fi
+}
+%    \end{macrocode}
+%     \end{macro}
+%     \end{macro}
+%     \end{macro}
+%
+% \Finale
+\endinput % End of File.
