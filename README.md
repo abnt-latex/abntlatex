@@ -1,3 +1,1 @@
 # abntlatex
---
-test

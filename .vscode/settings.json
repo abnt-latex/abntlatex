@@ -1,0 +1,64 @@
+{
+    "files.exclude": {
+        // Latex
+        "**/*.aux": true,
+        "**/*.lof": true,
+        "**/*.log": true,
+        "**/*.lot": true,
+        "**/*.toc": true,
+        "**/*.out": true,
+        "**/*.glo": true,
+        "**/*.gls": true,
+        "**/*.hd": true,
+        "**/*.ilg": true,
+
+        // Bibtex
+        "**/*.bbl": true,
+        "**/*.blg": true,
+        
+        // Cache
+        "**/cache/": true,
+
+        // Git
+        "**/.gitkeep": true, 
+        "**/.gitignore": true,
+
+        // Sagetex
+        "**/*.sagetex.sage": true,
+        "**/*.sage.py": true,
+        "**/*.sagetex.scmd": true,
+        "**/*.sagetex.sout": true,
+        "**/*.sage": true,
+        "**/sage-plots-for-*.tex": true,
+        "**/*.sobj": true,
+
+        // backref
+        "**/*.brf" : true
+
+    },
+    "[latex]": {
+        "editor.wordWrap": "on",
+        "editor.autoClosingQuotes": "always",
+        "editor.autoClosingBrackets": "always",
+        "editor.fontSize": 12,
+        "editor.tabSize": 4
+    },
+    "[tex]": {
+        "editor.wordWrap": "on",
+        "editor.autoClosingQuotes": "always",
+        "editor.autoClosingBrackets": "always",
+        "editor.fontSize": 12,
+        "editor.tabSize": 4
+    },
+    "workbench.editor.autoLockGroups": {
+        "pdf.preview": true
+    },
+
+    "workbench.statusBar.visible": true,
+    
+    "files.associations": {
+        "*.dtx": "latex",
+        "*.ins": "latex",
+    },
+    //"workbench.activityBar.location": "hidden"
+}

@@ -1,0 +1,30 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Compile Latex",
+            "type": "shell",
+            "command": "./build.sh",
+            "args": [
+                "${input:mainfile}"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ],
+    "inputs": [
+        {
+            "id": "mainfile",
+            "description": "Main File Path:",
+            "default": "main",
+            "type": "promptString"
+        },
+    ],
+    "presentation": {
+        "panel": "dedicated",
+        "focus": true
+    }
+}
