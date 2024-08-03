@@ -1,0 +1,96 @@
+% Modelo Canônico de documento usando o abntlatex
+\documentclass[oneside]{abntlatex}
+
+% Uso de recursos de matemática
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Recursos extras
+\usepackage{steinmetz}  % usar números polares
+\usepackage{subcaption} % usar subfigure
+\usepackage{float}
+\usepackage{lipsum}
+
+% --- Configurações dos pacotes ---
+% ---
+\graphicspath{{./figures/}} % default Path
+
+\makeatletter
+\hypersetup{
+	pdftitle = {\@title}, 
+	pdfauthor = {\@author},
+	pdfcreator = {LaTeX2e with SageTex},
+	pdfkeywords = {latex }{SageTex }{ABNT }, 
+  pdfpagemode = FullScreen,
+  colorlinks = false,
+  linkbordercolor = red,
+  citebordercolor = red,
+  urlbordercolor = red
+}
+\makeatother
+% ---
+
+\title        {Modelo canônico de artigo científico em \LaTeX usando abnt\LaTeX :}
+\subtitle     {Análise de um circuito de um filtro passivo}
+\university   {Universidade de NOME-DA-UNIVERSIDADE - SIGLA-DA-UNIVERSIDADE}
+\author       {NOME-DO-AUTOR}
+\predate      {LOCAL, LOCAL}
+\date         {\the\year}
+\documenttype {Exemplo de artigo científico.}
+\preamble     {Artigo científico apresentado à disciplina de NOME-DA-DISCIPLINA para obter aprovação na disciplina SIGLA-DA-DISCIPLINA.}
+\supervisor   {NOME-ORIENTADOR}
+\cosupervisor {NOME-COORIENTADOR}
+\keywords     {LaTeX; ABNT}
+
+\begin{document}
+  \pretext%
+  % --- Parte externa (NBR 14724/2011) ---
+  % ---
+  \maketitle % Capa
+  % Lombada (opcional)
+  % ---
+
+  % --- Elementos Pré-textuais (NBR 14724/2011) ---
+  % ---
+  \coverpage%       Folha de rosto                 (obrigatório)
+  %                 Errata                         (opcional)
+  %                 Folha de aprovação             (obrigatório)
+  %                 Dedicatória                    (opcional)
+  %                 Agradecimentos                 (opcional)
+  %                 Epínagrefe                     (opcional)
+  \begin{abstract}% Resumo na língua vernácula     (obrigatório)
+    \lipsum[1-1]
+  \end{abstract}
+  %                 Resumo na língua estrangeira   (obrigatório) 
+  \listoffigures%   Lista de ilustrações           (opcional)
+  \listoftables%    Lista de tabelas               (opcional)
+  %                 Lista de abreviaturas e siglas (opcional)
+  %                 Lista de símbolos              (opcional)
+  \tableofcontents% Sumário                        (obrigatório)
+  % ---
+
+  % --- Elementos Textuais ---
+  % ---
+  \maintext%
+
+  % Seção 1. Introdução
+  \include{sections/introduction}
+
+  % Seção 2. Análise teórica
+  \include{sections/theoretical-analysis}
+
+  % Seção 3. Conclusão
+  \include{sections/conclusion}
+  % ---
+
+  % --- Elementos pós-textuais (NBR 14724/2011) ---
+  % ---
+  \backtext%
+  \bibliography{references} % Referências (obrigatório)
+  %                           Glossário   (opcional)
+  %                           Apêndice    (opcional)
+  %                           Anexo       (opcional)
+  %                           Índice      (opcional)
+  % ---
+
+\end{document}
