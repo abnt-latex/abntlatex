@@ -19,7 +19,7 @@
         {
             "id": "mainfile",
             "description": "Main File Path:",
-            "default": "main",
+            "default": "",
             "type": "promptString"
         },
     ],
