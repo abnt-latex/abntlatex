@@ -288,7 +288,7 @@
 \newcommand\pretext{%
   \frenchspacing%
   \pagestyle{empty}%
-  \linespread{1.25}%
+  %\linespread{1.25}% TODO: necessario colocar \selectfont ou usar antes do \begin{document}
 }
 %    \end{macrocode}
 %     \end{macro}
@@ -303,35 +303,27 @@
 %       Comandos para implementar a capa e a folha de rosto, todos os comandos são do tipo |\command|\marg{text}.
 %    \begin{macrocode}
 \newcommand*{\university}[1]{\gdef\@university{#1}}%
-\newcommand*{\@university}{\university}%
 %    \end{macrocode}
 %    \begin{macrocode}
 \newcommand*{\subtitle}[1]{\gdef\@subtitle{#1}}%
-\newcommand*{\@subtitle}{\subtitle}%
 %    \end{macrocode}
 %    \begin{macrocode}
 \newcommand*{\predate}[1]{\gdef\@predate{#1}}%
-\newcommand*{\@predate}{\predate}%
 %    \end{macrocode}
 %    \begin{macrocode}
 \newcommand*{\documenttype}[1]{\gdef\@documenttype{#1}}%
-\newcommand*{\@documenttype}{\documenttype}%
 %    \end{macrocode}
 %    \begin{macrocode}
 \newcommand*{\preamble}[1]{\gdef\@preamble{#1}}%
-\newcommand*{\@preamble}{\preamble}%
 %    \end{macrocode}
 %    \begin{macrocode}
 \newcommand*{\supervisor}[1]{\gdef\@supervisor{#1}}%
-\newcommand*{\@supervisor}{\supervisor}%
 %    \end{macrocode}
 %    \begin{macrocode}
 \newcommand*{\cosupervisor}[1]{\gdef\@cosupervisor{#1}}%
-\newcommand*{\@cosupervisor}{\cosupervisor}%
 %    \end{macrocode}
 %    \begin{macrocode}
 \newcommand*{\keywords}[1]{\gdef\@keywords{#1}}%
-\newcommand*{\@keywords}{\keywords}%
 %    \end{macrocode}
 %     \end{macro}
 %     \end{macro}
@@ -436,10 +428,10 @@
   {\centering\section*{\listfigurename}}%
 
   {%
-    \let\oldnumberline\numberline% TODO: Corrigir o aviso
-    \renewcommand{\numberline}[1]{\figurename~\oldnumberline{%
-      #1\hfill\textendash\hfill}%
-    }%
+    %\let\oldnumberline\numberline% TODO: Corrigir o aviso
+    %\renewcommand{\numberline}[1]{\figurename~\oldnumberline{%
+    %  #1\hfill\textendash\hfill}%
+    %}%
     \@starttoc{lof}%
   }%
   \newpage
@@ -458,8 +450,8 @@
   {\centering\section*{\listtablename}}%
 
   {%
-    \let\oldnumberline\numberline% TODO: Corrigir o aviso
-    \renewcommand\numberline[1]{\tablename~{#1\hfill\textendash\hfill}}%
+  %  \let\oldnumberline\numberline% TODO: Corrigir o aviso
+  %  \renewcommand\numberline[1]{\tablename~{#1\hfill\textendash\hfill}}%
     \@starttoc{lot}%
   }%
   \newpage
@@ -519,7 +511,7 @@
 \newcommand\maintext{%
   \frenchspacing%
   \pagestyle{myheadings}%
-  \linespread{1.25}%
+  %\linespread{1.25}% TODO: necessario colocar \selectfont ou usar antes do \begin{document}
 }
 %    \end{macrocode}
 %     \end{macro}
@@ -580,7 +572,7 @@
   \frenchspacing%
   \bibliographystyle{unsrt}%
   \pagestyle{myheadings}%
-  \linespread{1.0}%
+  %\linespread{1.0}% TODO: necessario colocar \selectfont ou usar antes do \begin{document}
 }
 %    \end{macrocode}
 %     \end{macro}
