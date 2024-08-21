@@ -341,7 +341,10 @@
   \begin{center}%
     \begin{minipage}[t][0.5\textheight]{\textwidth}%
       \centering
-      {\large\@university\par}%
+      { \ifdefined\@university%
+          \large\@university\par
+        \fi
+      }%
       \vspace*{2cm}%
       {\large\begin{tabular}[t]{c}%
         \@author%
@@ -349,11 +352,17 @@
         
       \vspace*{\fill}%
       {\LARGE\@title\par}%
-      {\large\@subtitle\par}%
+      { \ifdefined\@subtitle%
+          \large\@subtitle\par
+        \fi
+      }%
     \end{minipage}%
 
     \vspace*{\fill}%
-    {\normalsize\@predate\par}%
+    { \ifdefined\@predate%
+        \normalsize\@predate\par
+      \fi
+    }%
     {\normalsize\@date}%
   \end{center}%
   \newpage%
@@ -374,25 +383,46 @@
       \vspace*{\fill}%
 
       {\LARGE\@title\par}%
-      {\large\@subtitle\par}%
+      { \ifdefined\@subtitle%
+          \large\@subtitle\par
+        \fi
+      }%
     \end{minipage}
     \vspace*{\fill}%
       
     {\hspace{.45\textwidth}
     \begin{minipage}[c]{0.5\textwidth}%
       \linespread{1.0}%
-      {\small\@documenttype\par}%
-      {\small\@preamble\par}%
-      {\small\@university\par}%
+      { \ifdefined\@documenttype
+          \small\@documenttype\par
+        \fi
+      }%
+      { \ifdefined\@preamble
+          \small\@preamble\par
+        \fi
+      }%
+      { \ifdefined\@university
+          \small\@university\par
+        \fi
+      }%
     \vspace*{\fill}%
     \end{minipage}\par}%
     \vspace*{\fill}%
 
-    {\normalsize Orientador: \@supervisor \par}%
-    {\normalsize Coorientador: \@cosupervisor \par}%
+    { \ifdefined\@supervisor%
+        \normalsize Orientador: \@supervisor \par
+      \fi
+    }%
+    { \ifdefined\@cosupervisor%
+        \normalsize Coorientador: \@cosupervisor \par
+      \fi
+    }%
     \vspace*{\fill}%
 
-    {\normalsize\@predate\par}%
+    { \ifdefined\@predate%
+        \normalsize\@predate\par
+      \fi
+    }%
     {\normalsize\@date}%
   \end{center}%
   \newpage%
