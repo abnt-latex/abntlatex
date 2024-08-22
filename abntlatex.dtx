@@ -431,15 +431,39 @@
 %     \end{macro}
 %
 %     \begin{environment}{abstract (env)}
-%       Construção do resumo, realiza a centralização horizontal do título, além de adicionar um campo para as palavras-chave. {\color{red}\textbf{TODO:}} Deixar keywords como uma lista de palavras e adicionar o ponto e vírgula de forma automática.
+%       Construção do resumo, realiza a centralização horizontal do título, além de adicionar um campo para as palavras-chave.
 %    \begin{macrocode}
+%% SPLIT
+\newcommand{\split}[2][,]{%
+\begingroup%
+    \def\start{}%
+    \def\itemseparate{#1}%
+    \expandafter\splitaux#2\end%
+\endgroup
+}
+\def\splitaux#1\end{%
+    \@split \start#1,\end,%
+}
+\def\@split #1,{%
+    \ifx\end#1%
+        \unskip\char46% char 46 = .
+    \else%
+        \ifx\start#1%
+        \else%
+            \unskip\itemseparate\space\ignorespaces#1%
+        \fi%
+        \expandafter\@split%
+    \fi%
+}
+%% END SPLIT
+
 \renewenvironment{abstract}{%
   \begin{center}%
     \textbf{\Large\abstractname\vspace{\z@}}%
   \end{center}%
 }{%
   {\par\null\par\noindent\textbf{Palavras-chave: }}%
-  \@keywords.
+  \split[;]{\@keywords}
 \newpage%
 }
 %    \end{macrocode}
