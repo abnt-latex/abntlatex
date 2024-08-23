@@ -60,6 +60,8 @@
 % ^^A ---
 % 
 % \makeatletter
+%   \newcommand\todo[1]{{\color{red}\textbf{TODO:}} #1}
+%
 %   \renewcommand{\ps@myheadings}{%
 %     \renewcommand\@oddhead{\vbox{\rightmark\hfill\thepage\vskip3\p@\hrule}}%
 %     \renewcommand\@evenhead{}%
@@ -69,7 +71,7 @@
 %
 %   \pagestyle{myheadings}
 %
-%   \markright{abntlatex.cls}
+%   \markright{abntlatex}
 %
 %   \renewenvironment{theglossary}{%
 %     \glossary@prologue%
@@ -230,6 +232,9 @@
 %
 % \section{Descrição dos comandos}
 %
+%   \DescribeMacro{\split}
+%     Comando para auxiliar na divisão, com um caractere especificado, de uma lista de palavras.
+%
 %   \DescribeMacro{\pretext}
 %     Configuração de espaçamento, segundo a NBR 14724/2011, e de paginação, segundo a NBR 14724/2011, para os elementos pré-textuais.
 %
@@ -239,7 +244,7 @@
 %   \DescribeMacro{\coverpage}
 %     Folha de rosto conforme a NBR 14724/2011, além dos comandos utilizados para customizar os elementos da capa é possível usar: |\documenttype|\marg{text}, |\preamble|\marg{text}, |\supervisor|\marg{text}, |\cosupervisor|\marg{text}. 
 %
-%     {\color{red}\textbf{TODO:}} Adicionar 4.2.1.1.2: Verso. 
+%     \todo{Adicionar 4.2.1.1.2: Verso. }
 %
 %   \DescribeEnv{abstract (env)}
 %     Resumo na língua vernácula conforme a NBR 14724/2011 e a NBR6028/2021, é possível utilizar o comando |\keywords|\marg{text} para configurar as palavras-chave do documento.
@@ -281,6 +286,33 @@
 %   Configuração da exibição do número da referência, segundo a NBR 14724/2011 e a NBR 10520/2023.
 %
 % \section{Implementação dos comandos}
+%   \subsection{Comandos auxiliares}
+%     \begin{macro}{\split}
+%    \begin{macrocode}
+\newcommand{\split}[2][,]{%
+\begingroup%
+    \def\start{}%
+    \def\itemseparate{#1}%
+    \expandafter\splitaux#2\end%
+\endgroup
+}
+\def\splitaux#1\end{%
+    \@split \start#1,\end,%
+}
+\def\@split #1,{%
+    \ifx\end#1%
+        \unskip\char46% char 46 = .
+    \else%
+        \ifx\start#1%
+        \else%
+            \unskip\itemseparate\space\ignorespaces#1%
+        \fi%
+        \expandafter\@split%
+    \fi%
+}
+%    \end{macrocode}
+%     \end{macro}
+%
 %   \subsection{Elementos pré-textuais}
 %     \begin{macro}{\pretext}
 %       Configurações pré-texto.
@@ -335,7 +367,7 @@
 %     \end{macro}
 %
 %     \begin{macro}{\maketitle}
-%       Construção da capa, realiza a remoção da numeração da pagina, centralização horizontal do conteúdo e o título e subtítulo são centralizados verticalmente no meio da pagina independente das informações que o precede, utilizando uma \textbf{minipage}. {\color{red}\textbf{TODO:}} Pode acabar ficando sobrescrito pelos autores. Para a adição dos autores foi utilizada uma tabela.
+%       Construção da capa, realiza a remoção da numeração da pagina, centralização horizontal do conteúdo e o título e subtítulo são centralizados verticalmente no meio da pagina independente das informações que o precede, utilizando uma \textbf{minipage}. \todo{Pode acabar ficando sobrescrito pelos autores. Para a adição dos autores foi utilizada uma tabela.}
 %    \begin{macrocode}
 \renewcommand{\maketitle}{%
   \begin{center}%
@@ -433,30 +465,6 @@
 %     \begin{environment}{abstract (env)}
 %       Construção do resumo, realiza a centralização horizontal do título, além de adicionar um campo para as palavras-chave.
 %    \begin{macrocode}
-%% SPLIT
-\newcommand{\split}[2][,]{%
-\begingroup%
-    \def\start{}%
-    \def\itemseparate{#1}%
-    \expandafter\splitaux#2\end%
-\endgroup
-}
-\def\splitaux#1\end{%
-    \@split \start#1,\end,%
-}
-\def\@split #1,{%
-    \ifx\end#1%
-        \unskip\char46% char 46 = .
-    \else%
-        \ifx\start#1%
-        \else%
-            \unskip\itemseparate\space\ignorespaces#1%
-        \fi%
-        \expandafter\@split%
-    \fi%
-}
-%% END SPLIT
-
 \renewenvironment{abstract}{%
   \begin{center}%
     \textbf{\Large\abstractname\vspace{\z@}}%
@@ -521,10 +529,11 @@
 %     \begin{macro}{\l@subsubsection}
 %     \begin{macro}{\@tocrmarg}
 %       Construção do sumário.
-%       TODO: Arrumar o espaçamento de quando ocorre a quebra de linha.
-%       TODO: Ajustar o espaçamento dos pontos.
-%       TODO: Ver 6.1 NBR 6027/2012.
-%
+%       \begin{itemize}
+%         \item[--] \todo{Arrumar o espaçamento de quando ocorre a quebra de linha.}
+%         \item[--] \todo{Ajustar o espaçamento dos pontos.}
+%         \item[--] \todo{Ver 6.1 NBR 6027/2012.}
+%       \end{itemize}
 %    \begin{macrocode}
 \renewcommand\@tocrmarg{2.0cm}
 

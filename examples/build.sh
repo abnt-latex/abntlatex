@@ -41,7 +41,7 @@ done
 
 shift $((OPTIND-1)) # remove parsed options and args from $@ list
 
-FIGURES_SVG=$(find "${PROJECT_DIR}figure/" -name "*.svg")
+FIGURES_SVG=$(find "${PROJECT_DIR}figures/" -name "*.svg")
 
 R_FILES=$(find ${PROJECT_DIR} -name "*.Rtex")
 R_FILES+=$'\n'
