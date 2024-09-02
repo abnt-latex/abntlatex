@@ -287,9 +287,9 @@
 %
 % \section{Implementação dos comandos}
 %   \subsection{Comandos auxiliares}
-%     \begin{macro}{\split}
+%     \begin{macro}{\splittext}
 %    \begin{macrocode}
-\newcommand{\split}[2][,]{%
+\newcommand{\splittext}[2][,]{%
 \begingroup%
     \def\start{}%
     \def\itemseparate{#1}%
@@ -471,7 +471,7 @@
   \end{center}%
 }{%
   {\par\null\par\noindent\textbf{Palavras-chave: }}%
-  \split[;]{\@keywords}
+  \splittext[;]{\@keywords}
 \newpage%
 }
 %    \end{macrocode}

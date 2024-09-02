@@ -1026,7 +1026,8 @@ FUNCTION {format.address}
   duplicate$ empty$ 
     {
       "[" bbl.sl emphasize * "]" * *
-      "address was replaced by [s.l.] in " cite$ * warning$
+      %% TODO: mudar para apenas modo de aviso
+      %%"address was replaced by [s.l.] in " cite$ * warning$
     }
     'skip$
   if$
@@ -1070,11 +1071,12 @@ FUNCTION {format.org.or.pub}
 %% NBR6023/2018 - 8.5 Editora
 FUNCTION {format.publisher.address}
 { publisher
-  "publisher" bibinfo.warn
+  "publisher" bibinfo.check
   duplicate$ empty$ 
     {
       "[" bbl.sn emphasize * "]" * *
-      "publisher was replaced by [s.n.] in" cite$ * warning$
+      %% TODO: mudar para apenas modo de aviso
+      %%"publisher was replaced by [s.n.] in" cite$ * warning$
     }
     'skip$
   if$
@@ -1308,7 +1310,7 @@ FUNCTION {misc}
 { output.bibitem
   format.authors.or.organization "author or organization" bibinfo.warn output new.sentence
   format.btitle "title" output.check new.block
-  format.note "note" output.check
+  format.note output
   format.publisher.address output
   format.date "year" output.check
   format.vol.num.pages
