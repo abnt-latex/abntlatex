@@ -583,7 +583,9 @@
 %     \begin{macro}{\@cite}
 %       Configuração das citações, para o comando |\cite|\marg{text}.
 %    \begin{macrocode}
-\renewcommand*{\@cite}[1]{(#1)}
+\let\oldcite\cite
+\renewcommand*\@cite[1]{#1}
+\renewcommand*\cite[2][\@empty]{(\oldcite{#2}\ifx#1\@empty\relax\else, #1\fi)}
 %    \end{macrocode}
 %     \end{macro}
 %     \end{macro}
