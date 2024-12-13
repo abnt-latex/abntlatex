@@ -60,6 +60,8 @@
 % ^^A ---
 % 
 % \makeatletter
+%   \newcommand\todo[1]{{\color{red}\textbf{TODO:}} #1}
+%
 %   \renewcommand{\ps@myheadings}{%
 %     \renewcommand\@oddhead{\vbox{\rightmark\hfill\thepage\vskip3\p@\hrule}}%
 %     \renewcommand\@evenhead{}%
@@ -69,7 +71,7 @@
 %
 %   \pagestyle{myheadings}
 %
-%   \markright{abntlatex.cls}
+%   \markright{abntlatex}
 %
 %   \renewenvironment{theglossary}{%
 %     \glossary@prologue%
@@ -154,7 +156,7 @@
 %   \begin{macro}{inputenc (package)}
 %     Conjunto de pacotes para configurar a fonte, caracteres e os títulos para o português brasileiro, além de selecionar a fonte \textbf{Times New Roman}.
 %    \begin{macrocode}
-\RequirePackage{mathptmx}
+\RequirePackage{newtx}
 \RequirePackage[brazil]{babel}
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}	
@@ -230,6 +232,9 @@
 %
 % \section{Descrição dos comandos}
 %
+%   \DescribeMacro{\split}
+%     Comando para auxiliar na divisão, com um caractere especificado, de uma lista de palavras.
+%
 %   \DescribeMacro{\pretext}
 %     Configuração de espaçamento, segundo a NBR 14724/2011, e de paginação, segundo a NBR 14724/2011, para os elementos pré-textuais.
 %
@@ -239,7 +244,7 @@
 %   \DescribeMacro{\coverpage}
 %     Folha de rosto conforme a NBR 14724/2011, além dos comandos utilizados para customizar os elementos da capa é possível usar: |\documenttype|\marg{text}, |\preamble|\marg{text}, |\supervisor|\marg{text}, |\cosupervisor|\marg{text}. 
 %
-%     {\color{red}\textbf{TODO:}} Adicionar 4.2.1.1.2: Verso. 
+%     \todo{Adicionar 4.2.1.1.2: Verso. }
 %
 %   \DescribeEnv{abstract (env)}
 %     Resumo na língua vernácula conforme a NBR 14724/2011 e a NBR6028/2021, é possível utilizar o comando |\keywords|\marg{text} para configurar as palavras-chave do documento.
@@ -281,6 +286,33 @@
 %   Configuração da exibição do número da referência, segundo a NBR 14724/2011 e a NBR 10520/2023.
 %
 % \section{Implementação dos comandos}
+%   \subsection{Comandos auxiliares}
+%     \begin{macro}{\splittext}
+%    \begin{macrocode}
+\newcommand{\splittext}[2][,]{%
+\begingroup%
+    \def\start{}%
+    \def\itemseparate{#1}%
+    \expandafter\splitaux#2\end%
+\endgroup
+}
+\def\splitaux#1\end{%
+    \@split \start#1,\end,%
+}
+\def\@split #1,{%
+    \ifx\end#1%
+        \unskip\char46% char 46 = .
+    \else%
+        \ifx\start#1%
+        \else%
+            \unskip\itemseparate\space\ignorespaces#1%
+        \fi%
+        \expandafter\@split%
+    \fi%
+}
+%    \end{macrocode}
+%     \end{macro}
+%
 %   \subsection{Elementos pré-textuais}
 %     \begin{macro}{\pretext}
 %       Configurações pré-texto.
@@ -288,7 +320,7 @@
 \newcommand\pretext{%
   \frenchspacing%
   \pagestyle{empty}%
-  \linespread{1.25}%
+  %\linespread{1.25}% TODO: necessario colocar \selectfont ou usar antes do \begin{document}
 }
 %    \end{macrocode}
 %     \end{macro}
@@ -303,35 +335,27 @@
 %       Comandos para implementar a capa e a folha de rosto, todos os comandos são do tipo |\command|\marg{text}.
 %    \begin{macrocode}
 \newcommand*{\university}[1]{\gdef\@university{#1}}%
-\newcommand*{\@university}{\university}%
 %    \end{macrocode}
 %    \begin{macrocode}
 \newcommand*{\subtitle}[1]{\gdef\@subtitle{#1}}%
-\newcommand*{\@subtitle}{\subtitle}%
 %    \end{macrocode}
 %    \begin{macrocode}
 \newcommand*{\predate}[1]{\gdef\@predate{#1}}%
-\newcommand*{\@predate}{\predate}%
 %    \end{macrocode}
 %    \begin{macrocode}
 \newcommand*{\documenttype}[1]{\gdef\@documenttype{#1}}%
-\newcommand*{\@documenttype}{\documenttype}%
 %    \end{macrocode}
 %    \begin{macrocode}
 \newcommand*{\preamble}[1]{\gdef\@preamble{#1}}%
-\newcommand*{\@preamble}{\preamble}%
 %    \end{macrocode}
 %    \begin{macrocode}
 \newcommand*{\supervisor}[1]{\gdef\@supervisor{#1}}%
-\newcommand*{\@supervisor}{\supervisor}%
 %    \end{macrocode}
 %    \begin{macrocode}
 \newcommand*{\cosupervisor}[1]{\gdef\@cosupervisor{#1}}%
-\newcommand*{\@cosupervisor}{\cosupervisor}%
 %    \end{macrocode}
 %    \begin{macrocode}
 \newcommand*{\keywords}[1]{\gdef\@keywords{#1}}%
-\newcommand*{\@keywords}{\keywords}%
 %    \end{macrocode}
 %     \end{macro}
 %     \end{macro}
@@ -343,13 +367,16 @@
 %     \end{macro}
 %
 %     \begin{macro}{\maketitle}
-%       Construção da capa, realiza a remoção da numeração da pagina, centralização horizontal do conteúdo e o título e subtítulo são centralizados verticalmente no meio da pagina independente das informações que o precede, utilizando uma \textbf{minipage}. {\color{red}\textbf{TODO:}} Pode acabar ficando sobrescrito pelos autores. Para a adição dos autores foi utilizada uma tabela.
+%       Construção da capa, realiza a remoção da numeração da pagina, centralização horizontal do conteúdo e o título e subtítulo são centralizados verticalmente no meio da pagina independente das informações que o precede, utilizando uma \textbf{minipage}. \todo{Pode acabar ficando sobrescrito pelos autores. Para a adição dos autores foi utilizada uma tabela.}
 %    \begin{macrocode}
 \renewcommand{\maketitle}{%
   \begin{center}%
     \begin{minipage}[t][0.5\textheight]{\textwidth}%
       \centering
-      {\large\@university\par}%
+      { \ifdefined\@university%
+          \large\@university\par
+        \fi
+      }%
       \vspace*{2cm}%
       {\large\begin{tabular}[t]{c}%
         \@author%
@@ -357,11 +384,17 @@
         
       \vspace*{\fill}%
       {\LARGE\@title\par}%
-      {\large\@subtitle\par}%
+      { \ifdefined\@subtitle%
+          \large\@subtitle\par
+        \fi
+      }%
     \end{minipage}%
 
     \vspace*{\fill}%
-    {\normalsize\@predate\par}%
+    { \ifdefined\@predate%
+        \normalsize\@predate\par
+      \fi
+    }%
     {\normalsize\@date}%
   \end{center}%
   \newpage%
@@ -382,25 +415,46 @@
       \vspace*{\fill}%
 
       {\LARGE\@title\par}%
-      {\large\@subtitle\par}%
+      { \ifdefined\@subtitle%
+          \large\@subtitle\par
+        \fi
+      }%
     \end{minipage}
     \vspace*{\fill}%
       
     {\hspace{.45\textwidth}
     \begin{minipage}[c]{0.5\textwidth}%
       \linespread{1.0}%
-      {\small\@documenttype\par}%
-      {\small\@preamble\par}%
-      {\small\@university\par}%
+      { \ifdefined\@documenttype
+          \small\@documenttype\par
+        \fi
+      }%
+      { \ifdefined\@preamble
+          \small\@preamble\par
+        \fi
+      }%
+      { \ifdefined\@university
+          \small\@university\par
+        \fi
+      }%
     \vspace*{\fill}%
     \end{minipage}\par}%
     \vspace*{\fill}%
 
-    {\normalsize Orientador: \@supervisor \par}%
-    {\normalsize Coorientador: \@cosupervisor \par}%
+    { \ifdefined\@supervisor%
+        \normalsize Orientador: \@supervisor \par
+      \fi
+    }%
+    { \ifdefined\@cosupervisor%
+        \normalsize Coorientador: \@cosupervisor \par
+      \fi
+    }%
     \vspace*{\fill}%
 
-    {\normalsize\@predate\par}%
+    { \ifdefined\@predate%
+        \normalsize\@predate\par
+      \fi
+    }%
     {\normalsize\@date}%
   \end{center}%
   \newpage%
@@ -409,7 +463,7 @@
 %     \end{macro}
 %
 %     \begin{environment}{abstract (env)}
-%       Construção do resumo, realiza a centralização horizontal do título, além de adicionar um campo para as palavras-chave. {\color{red}\textbf{TODO:}} Deixar keywords como uma lista de palavras e adicionar o ponto e vírgula de forma automática.
+%       Construção do resumo, realiza a centralização horizontal do título, além de adicionar um campo para as palavras-chave.
 %    \begin{macrocode}
 \renewenvironment{abstract}{%
   \begin{center}%
@@ -417,7 +471,7 @@
   \end{center}%
 }{%
   {\par\null\par\noindent\textbf{Palavras-chave: }}%
-  \@keywords.
+  \splittext[;]{\@keywords}
 \newpage%
 }
 %    \end{macrocode}
@@ -436,10 +490,10 @@
   {\centering\section*{\listfigurename}}%
 
   {%
-    \let\oldnumberline\numberline% TODO: Corrigir o aviso
-    \renewcommand{\numberline}[1]{\figurename~\oldnumberline{%
-      #1\hfill\textendash\hfill}%
-    }%
+    %\let\oldnumberline\numberline% TODO: Corrigir o aviso
+    %\renewcommand{\numberline}[1]{\figurename~\oldnumberline{%
+    %  #1\hfill\textendash\hfill}%
+    %}%
     \@starttoc{lof}%
   }%
   \newpage
@@ -458,8 +512,8 @@
   {\centering\section*{\listtablename}}%
 
   {%
-    \let\oldnumberline\numberline% TODO: Corrigir o aviso
-    \renewcommand\numberline[1]{\tablename~{#1\hfill\textendash\hfill}}%
+  %  \let\oldnumberline\numberline% TODO: Corrigir o aviso
+  %  \renewcommand\numberline[1]{\tablename~{#1\hfill\textendash\hfill}}%
     \@starttoc{lot}%
   }%
   \newpage
@@ -475,10 +529,11 @@
 %     \begin{macro}{\l@subsubsection}
 %     \begin{macro}{\@tocrmarg}
 %       Construção do sumário.
-%       TODO: Arrumar o espaçamento de quando ocorre a quebra de linha.
-%       TODO: Ajustar o espaçamento dos pontos.
-%       TODO: Ver 6.1 NBR 6027/2012.
-%
+%       \begin{itemize}
+%         \item[--] \todo{Arrumar o espaçamento de quando ocorre a quebra de linha.}
+%         \item[--] \todo{Ajustar o espaçamento dos pontos.}
+%         \item[--] \todo{Ver 6.1 NBR 6027/2012.}
+%       \end{itemize}
 %    \begin{macrocode}
 \renewcommand\@tocrmarg{2.0cm}
 
@@ -519,7 +574,7 @@
 \newcommand\maintext{%
   \frenchspacing%
   \pagestyle{myheadings}%
-  \linespread{1.25}%
+  %\linespread{1.25}% TODO: necessario colocar \selectfont ou usar antes do \begin{document}
 }
 %    \end{macrocode}
 %     \end{macro}
@@ -528,7 +583,9 @@
 %     \begin{macro}{\@cite}
 %       Configuração das citações, para o comando |\cite|\marg{text}.
 %    \begin{macrocode}
-\renewcommand*{\@cite}[1]{(#1)}
+\let\oldcite\cite
+\renewcommand*\@cite[1]{#1}
+\renewcommand*\cite[2][\@empty]{(\oldcite{#2}\ifx#1\@empty\relax\else, #1\fi)}
 %    \end{macrocode}
 %     \end{macro}
 %     \end{macro}
@@ -580,7 +637,7 @@
   \frenchspacing%
   \bibliographystyle{unsrt}%
   \pagestyle{myheadings}%
-  \linespread{1.0}%
+  %\linespread{1.0}% TODO: necessario colocar \selectfont ou usar antes do \begin{document}
 }
 %    \end{macrocode}
 %     \end{macro}

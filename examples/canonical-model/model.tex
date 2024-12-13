@@ -1,15 +1,17 @@
 % Modelo Canônico de documento usando o abntlatex
 \documentclass[oneside]{abntlatex}
+\usepackage{graphicx}
 
 % Uso de recursos de matemática
 \usepackage{amsmath}
-\usepackage{amssymb}
+%\usepackage{amssymb} nao e necessario mais apos a versao atualizada do pacote MNRAS
 
 % Recursos extras
 \usepackage{steinmetz}  % usar números polares
 \usepackage{subcaption} % usar subfigure
 \usepackage{float}
 \usepackage{lipsum}
+\usepackage{xcolor}
 
 % --- Configurações dos pacotes ---
 % ---
@@ -40,7 +42,7 @@
 \preamble     {Artigo científico apresentado à disciplina de NOME-DA-DISCIPLINA para obter aprovação na disciplina SIGLA-DA-DISCIPLINA.}
 \supervisor   {NOME-ORIENTADOR}
 \cosupervisor {NOME-COORIENTADOR}
-\keywords     {LaTeX; ABNT}
+\keywords     {LaTeX, ABNT}
 
 \begin{document}
   \pretext%
