@@ -37,6 +37,9 @@
  % The order in the reference list is that by which the works were originally
  %   cited in the text, or that in the database.
  %---------------------------------------------------------------------
+%%
+%% Repository: https://github.com/abnt-latex/abntlatex
+%%
 
 ENTRY
   {
