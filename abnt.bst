@@ -1086,6 +1086,17 @@ FUNCTION {format.publisher.address}
   format.org.or.pub
 }
 
+FUNCTION {format.pub.add.or.empty}
+{
+  ""
+  address empty$ publisher empty$ and
+  'skip$
+    {
+      format.publisher.address output
+    }
+  if$
+}
+
 FUNCTION {format.organization.address}
 { organization "organization" bibinfo.check format.org.or.pub
 }
@@ -1314,7 +1325,7 @@ FUNCTION {misc}
   format.authors.or.organization "author or organization" bibinfo.warn output new.sentence
   format.btitle "title" output.check new.block
   format.note output
-  format.publisher.address output
+  format.pub.add.or.empty output
   format.date "year" output.check
   format.vol.num.pages
   format.edition output
