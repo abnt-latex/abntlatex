@@ -319,6 +319,7 @@
 %    \begin{macrocode}
 \newcommand\pretext{%
   \frenchspacing%
+  \pagenumbering{roman}%
   \pagestyle{empty}%
   %\linespread{1.25}% TODO: necessario colocar \selectfont ou usar antes do \begin{document}
 }
@@ -369,7 +370,7 @@
 %     \begin{macro}{\maketitle}
 %       Construção da capa, realiza a remoção da numeração da pagina, centralização horizontal do conteúdo e o título e subtítulo são centralizados verticalmente no meio da pagina independente das informações que o precede, utilizando uma \textbf{minipage}. \todo{Pode acabar ficando sobrescrito pelos autores. Para a adição dos autores foi utilizada uma tabela.}
 %    \begin{macrocode}
-\renewcommand{\maketitle}{%
+\renewcommand{\@maketitle}{%
   \begin{center}%
     \begin{minipage}[t][0.5\textheight]{\textwidth}%
       \centering
@@ -397,7 +398,15 @@
     }%
     {\normalsize\@date}%
   \end{center}%
-  \newpage%
+}
+
+\let\mymaketitle\maketitle
+\renewcommand{\maketitle}{
+    \renewcommand{\thepage}{Cover}%
+    \mymaketitle%
+    \thispagestyle{empty}%
+    \newpage%
+    \pagenumbering{roman}%
 }
 %    \end{macrocode}
 %     \end{macro}
@@ -406,6 +415,7 @@
 %       Construção da folha de rosto, realiza a remoção da numeração da pagina, centralização horizontal do conteúdo e desloca as informações do preambulo, tipo de documento e universidade para a direita sem que o texto exceda o centro da pagina.
 %    \begin{macrocode}
 \newcommand{\coverpage}{%
+  %\renewcommand{\thepage}{Back Cover}%
   \begin{center}%
     \begin{minipage}[t][0.33\textheight]{\textwidth}%
       \centering%
@@ -573,6 +583,7 @@
 %    \begin{macrocode}
 \newcommand\maintext{%
   \frenchspacing%
+  \pagenumbering{arabic}%
   \pagestyle{myheadings}%
   %\linespread{1.25}% TODO: necessario colocar \selectfont ou usar antes do \begin{document}
 }

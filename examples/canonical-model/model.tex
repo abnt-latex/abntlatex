@@ -17,13 +17,25 @@
 % ---
 \graphicspath{{./figures/}} % default Path
 
+\title        {Modelo canônico de artigo científico em \LaTeX usando abnt\LaTeX}
+\subtitle     {Análise de um circuito de um filtro passivo}
+\university   {Universidade de NOME-DA-UNIVERSIDADE - SIGLA-DA-UNIVERSIDADE}
+\author       {NOME-DO-AUTOR}
+\predate      {LOCAL, SIGLA}
+\date         {\the\year}
+\documenttype {Exemplo de artigo científico.}
+\preamble     {Artigo científico apresentado à disciplina de NOME-DA-DISCIPLINA para obter aprovação na disciplina SIGLA-DA-DISCIPLINA.}
+\supervisor   {NOME-ORIENTADOR}
+\cosupervisor {NOME-COORIENTADOR}
+\keywords     {LaTeX, ABNT}
+
 \makeatletter
 \hypersetup{
   pdftitle = {\@title}, 
   pdfauthor = {\@author},
   pdfcreator = {LaTeX2e with ABNT},
-  pdfkeywords = {latex }{ABNT }, 
-  pdfpagemode = FullScreen,
+  pdfkeywords = {\@keywords}, 
+  %pdfpagemode = FullScreen,
   colorlinks = false,
   linkbordercolor = red,
   citebordercolor = red,
@@ -31,18 +43,6 @@
 }
 \makeatother
 % ---
-
-\title        {Modelo canônico de artigo científico em \LaTeX usando abnt\LaTeX :}
-\subtitle     {Análise de um circuito de um filtro passivo}
-\university   {Universidade de NOME-DA-UNIVERSIDADE - SIGLA-DA-UNIVERSIDADE}
-\author       {NOME-DO-AUTOR}
-\predate      {LOCAL, LOCAL}
-\date         {\the\year}
-\documenttype {Exemplo de artigo científico.}
-\preamble     {Artigo científico apresentado à disciplina de NOME-DA-DISCIPLINA para obter aprovação na disciplina SIGLA-DA-DISCIPLINA.}
-\supervisor   {NOME-ORIENTADOR}
-\cosupervisor {NOME-COORIENTADOR}
-\keywords     {LaTeX, ABNT}
 
 \begin{document}
   \pretext%
