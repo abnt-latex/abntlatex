@@ -1,10 +1,15 @@
+#!/bin/bash
+set -e
+
+FILE=${1:-"abntlatex"}
+
 latex abntlatex.ins
 
-pdflatex $1.dtx
+pdflatex $FILE.dtx
 bibtex example
-makeindex -s gglo.ist -o $1.gls $1.glo
-pdflatex $1.dtx
-pdflatex $1.dtx
+makeindex -s gglo.ist -o $FILE.gls $FILE.glo
+pdflatex $FILE.dtx
+pdflatex $FILE.dtx
 
 rm examples/canonical-model/abntlatex.cls
 cp abntlatex.cls examples/canonical-model
