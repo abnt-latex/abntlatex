@@ -150,7 +150,7 @@
 %    \end{macrocode}
 %   \end{macro}
 %
-%   \begin{macro}{mathptmx (package)}
+%   \begin{macro}{newtx (package)}
 %   \begin{macro}{babel (package)}
 %   \begin{macro}{fontenc (package)}
 %   \begin{macro}{inputenc (package)}
@@ -232,21 +232,18 @@
 %
 % \section{Descrição dos comandos}
 %
-%   \DescribeMacro{\split}
-%     Comando para auxiliar na divisão, com um caractere especificado, de uma lista de palavras.
-%
 %   \DescribeMacro{\pretext}
 %     Configuração de espaçamento, segundo a NBR 14724/2011, e de paginação, segundo a NBR 14724/2011, para os elementos pré-textuais.
 %
-%   \DescribeMacro{\maketitle}
+%   \DescribeMacro{\cover}
 %     Capa conforme a NBR 14724/2011, é possível utilizar os seguintes comandos para customização dos elementos: |\university|\marg{text}, |\subtitle|\marg{text}, |\predate|\marg{text}, além desses comandos foram utilizados os comandos padrões da classe \textit{article} para construção da capa, |\title|\marg{text}, |\author|\marg{text}, |\date|\marg{text}.
 %
-%   \DescribeMacro{\coverpage}
+%   \DescribeMacro{\backcover}
 %     Folha de rosto conforme a NBR 14724/2011, além dos comandos utilizados para customizar os elementos da capa é possível usar: |\documenttype|\marg{text}, |\preamble|\marg{text}, |\supervisor|\marg{text}, |\cosupervisor|\marg{text}. 
 %
 %     \todo{Adicionar 4.2.1.1.2: Verso. }
 %
-%   \DescribeEnv{abstract (env)}
+%   \DescribeEnv{abstract}
 %     Resumo na língua vernácula conforme a NBR 14724/2011 e a NBR6028/2021, é possível utilizar o comando |\keywords|\marg{text} para configurar as palavras-chave do documento.
 %
 %   \DescribeMacro{\fontfigure}
@@ -288,6 +285,9 @@
 % \section{Implementação dos comandos}
 %   \subsection{Comandos auxiliares}
 %     \begin{macro}{\splittext}
+%     Realizer a troca do sinal de acentuação em uma lista, por exemplo, se a lista original fosse Banana, Abacate, Laranja poderíamos tornar Banana; Abacate; Laranja, com o comando:
+%
+%     \noindent\verb|\splittext[;]{Banana, Abacate, Laranja}|
 %    \begin{macrocode}
 \newcommand{\splittext}[2][,]{%
 \begingroup%
@@ -310,6 +310,9 @@
         \expandafter\@split%
     \fi%
 }
+
+\newif\if@changetoonecolumn
+\@changetoonecolumnfalse
 %    \end{macrocode}
 %     \end{macro}
 %
@@ -317,9 +320,6 @@
 %     \begin{macro}{\pretext}
 %       Configurações pré-texto.
 %    \begin{macrocode}
-\newif\if@changetoonecolumn
-\@changetoonecolumnfalse
-
 \newcommand\pretext{%
   \if@twocolumn%
     \onecolumn%
@@ -427,7 +427,7 @@
 %     \end{macro}
 %
 %     \begin{macro}{\backcover}
-%       Construção da folha de rosto, realiza a remoção da numeração da pagina, centralização horizontal do conteúdo e desloca as informações do preambulo, tipo de documento e universidade para a direita sem que o texto exceda o centro da pagina.
+%       Construção da folha de rosto, realiza a remoção da numeração da pagina, centralização horizontal do conteúdo e desloca as informações do preâmbulo, tipo de documento e universidade para a direita sem que o texto exceda o centro da pagina.
 %    \begin{macrocode}
 \newcommand{\@backcover}{%
   \newpage%
@@ -507,7 +507,7 @@
 %     \end{macro}
 %
 %     \begin{macro}{\intercatalog}
-%       Construção da folha de rosto, realiza a remoção da numeração da pagina, centralização horizontal do conteúdo e desloca as informações do preambulo, tipo de documento e universidade para a direita sem que o texto exceda o centro da pagina.
+%     Template para os Dados Internacionais de Catalogação na Publicação.
 %    \begin{macrocode}
 \newcommand{\@intercatalog}{%
   \newpage%
@@ -556,7 +556,7 @@
 %    \end{macrocode}
 %     \end{macro}
 %
-%     \begin{environment}{abstract (env)}
+%     \begin{environment}{abstract}
 %       Construção do resumo, realiza a centralização horizontal do título, além de adicionar um campo para as palavras-chave.
 %    \begin{macrocode}
 \renewenvironment{abstract}{%
