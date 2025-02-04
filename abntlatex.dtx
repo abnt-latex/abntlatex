@@ -317,7 +317,14 @@
 %     \begin{macro}{\pretext}
 %       Configurações pré-texto.
 %    \begin{macrocode}
+\newif\if@changetoonecolumn
+\@changetoonecolumnfalse
+
 \newcommand\pretext{%
+  \if@twocolumn%
+    \onecolumn%
+    \@changetoonecolumntrue
+  \fi
   \frenchspacing%
   \pagenumbering{roman}%
   \pagestyle{empty}%
@@ -367,55 +374,65 @@
 %     \end{macro}
 %     \end{macro}
 %
-%     \begin{macro}{\maketitle}
-%       Construção da capa, realiza a remoção da numeração da pagina, centralização horizontal do conteúdo e o título e subtítulo são centralizados verticalmente no meio da pagina independente das informações que o precede, utilizando uma \textbf{minipage}. \todo{Pode acabar ficando sobrescrito pelos autores. Para a adição dos autores foi utilizada uma tabela.}
+%     \begin{macro}{\cover}
+%       Construção da capa, realiza a remoção da numeração da pagina, centralização horizontal do conteúdo e o título e subtítulo são centralizados verticalmente no meio da pagina independente das informações que o precede, utilizando um ambiente \textbf{minipage}. \todo{Pode acabar ficando sobrescrito pelos autores. Para a adição dos autores foi utilizada uma tabela.}
 %    \begin{macrocode}
 \renewcommand{\@maketitle}{%
+  \newpage%
+  \null%
+  \vskip 2em%
   \begin{center}%
     \begin{minipage}[t][0.5\textheight]{\textwidth}%
       \centering
-      { \ifdefined\@university%
+      {\ifdefined\@university% Opcional
           \large\@university\par
         \fi
       }%
       \vspace*{2cm}%
+      \let\footnote\thanks%
       {\large\begin{tabular}[t]{c}%
-        \@author%
+        \@author% Obrigatorio
       \end{tabular}\par}%
         
       \vspace*{\fill}%
-      {\LARGE\@title\par}%
-      { \ifdefined\@subtitle%
-          \large\@subtitle\par
+      {\LARGE\@title}% Obrigatorio
+      {\ifdefined\@subtitle%
+        {\LARGE:\par}{\large\@subtitle\par}% Opcional
         \fi
       }%
     \end{minipage}%
 
     \vspace*{\fill}%
-    { \ifdefined\@predate%
-        \normalsize\@predate\par
-      \fi
-    }%
-    {\normalsize\@date}%
+    {\normalsize\@predate\par}% Obrigatorio
+    {\normalsize\@date}% Obrigatorio
   \end{center}%
+  \par\vskip 1.5em%
 }
 
 \let\mymaketitle\maketitle
 \renewcommand{\maketitle}{
-    \renewcommand{\thepage}{Cover}%
-    \mymaketitle%
-    \thispagestyle{empty}%
-    \newpage%
-    \pagenumbering{roman}%
+  \let\save@author\@author%
+  \let\save@title\@title%
+  \renewcommand{\thepage}{Cover}%
+  \mymaketitle%
+  \thispagestyle{empty}%
+  \cleardoublepage%
+  \pagenumbering{roman}%
+  \let\@title\save@title%
+  \let\@author\save@author%
 }
+
+\let\cover\maketitle
 %    \end{macrocode}
 %     \end{macro}
 %
-%     \begin{macro}{\coverpage}
+%     \begin{macro}{\backcover}
 %       Construção da folha de rosto, realiza a remoção da numeração da pagina, centralização horizontal do conteúdo e desloca as informações do preambulo, tipo de documento e universidade para a direita sem que o texto exceda o centro da pagina.
 %    \begin{macrocode}
-\newcommand{\coverpage}{%
-  %\renewcommand{\thepage}{Back Cover}%
+\newcommand{\@backcover}{%
+  \newpage%
+  \null%
+  \vskip 2em%
   \begin{center}%
     \begin{minipage}[t][0.33\textheight]{\textwidth}%
       \centering%
@@ -425,7 +442,7 @@
       \vspace*{\fill}%
 
       {\LARGE\@title\par}%
-      { \ifdefined\@subtitle%
+      {\ifdefined\@subtitle%
           \large\@subtitle\par
         \fi
       }%
@@ -435,15 +452,15 @@
     {\hspace{.45\textwidth}
     \begin{minipage}[c]{0.5\textwidth}%
       \linespread{1.0}%
-      { \ifdefined\@documenttype
+      {\ifdefined\@documenttype
           \small\@documenttype\par
         \fi
       }%
-      { \ifdefined\@preamble
+      {\ifdefined\@preamble
           \small\@preamble\par
         \fi
       }%
-      { \ifdefined\@university
+      {\ifdefined\@university
           \small\@university\par
         \fi
       }%
@@ -451,23 +468,90 @@
     \end{minipage}\par}%
     \vspace*{\fill}%
 
-    { \ifdefined\@supervisor%
+    {\ifdefined\@supervisor%
         \normalsize Orientador: \@supervisor \par
       \fi
     }%
-    { \ifdefined\@cosupervisor%
+    {\ifdefined\@cosupervisor%
         \normalsize Coorientador: \@cosupervisor \par
       \fi
     }%
     \vspace*{\fill}%
 
-    { \ifdefined\@predate%
+    {\ifdefined\@predate%
         \normalsize\@predate\par
       \fi
     }%
     {\normalsize\@date}%
   \end{center}%
+  \par\vskip 1.5em%
+}
+
+\newcommand{\backcover}{%
+  %\renewcommand{\thepage}{Back Cover}%
+  \if@twocolumn
+    \ifnum\col@number=\@ne 
+      \@backcover 
+    \else 
+      \twocolumn [ \@backcover ]
+    \fi 
+  \else 
+    \newpage\@backcover 
+  \fi
+  \thispagestyle{empty}%
   \newpage%
+  \pagenumbering{roman}%
+}
+
+%    \end{macrocode}
+%     \end{macro}
+%
+%     \begin{macro}{\intercatalog}
+%       Construção da folha de rosto, realiza a remoção da numeração da pagina, centralização horizontal do conteúdo e desloca as informações do preambulo, tipo de documento e universidade para a direita sem que o texto exceda o centro da pagina.
+%    \begin{macrocode}
+\newcommand{\@intercatalog}{%
+  \newpage%
+  \null%
+  \vskip 2em%
+  \vspace*{\fill}%
+  \begin{center}
+  \begin{minipage}{0.8\linewidth}
+  \begin{center}
+    \textbf{\large Dados Internacionais de Catalogação na Publicação (CIP)}\par
+    \textbf{\large (Câmera Brasileira do Livro, SP - Brasil)}
+    \vskip 1em%
+    \framebox{\begin{minipage}{0.8\linewidth}\vskip 0.25em%
+      \begin{center}\begin{minipage}{0.8\linewidth}
+        \@title, \@author\par
+        \setlength\parindent{24pt}
+        Nononononononono: nonononononnonon / nononononononon. -- 1. ed. -- Nononononononon: Nonononononononononon, 2022.\par\setlength{\parskip}{12pt}
+        ISBN: 000-00-00000-00-0\par
+        1. Nononononononono
+      \end{minipage}\end{center}
+      00-00000\hfill CDD-000.0
+    \end{minipage}}
+    \vskip 1em%
+    \textbf{Índices para catálogo sistemático:}
+  \end{center}
+  XXXXXXX XXXXXXXX XXX\hfill CRB-XXXXXXXXXXXXX
+  \end{minipage}
+  \end{center}
+  \par\vskip 1.5em%
+}
+
+\newcommand{\intercatalog}{%
+  \if@twocolumn
+    \ifnum\col@number=\@ne 
+      \@intercatalog 
+    \else 
+      \twocolumn [ \@intercatalog ]
+    \fi 
+  \else 
+    \newpage\@intercatalog 
+  \fi
+  \thispagestyle{empty}%
+  \newpage%
+  \pagenumbering{roman}%
 }
 %    \end{macrocode}
 %     \end{macro}
@@ -477,7 +561,7 @@
 %    \begin{macrocode}
 \renewenvironment{abstract}{%
   \begin{center}%
-    \textbf{\Large\abstractname\vspace{\z@}}%
+    \section*{\abstractname\vspace{\z@}}
   \end{center}%
 }{%
   {\par\null\par\noindent\textbf{Palavras-chave: }}%
@@ -582,6 +666,9 @@
 %       Configuração dos elementos textuais.
 %    \begin{macrocode}
 \newcommand\maintext{%
+  \if@changetoonecolumn
+    \twocolumn
+  \fi
   \frenchspacing%
   \pagenumbering{arabic}%
   \pagestyle{myheadings}%
@@ -607,6 +694,9 @@
 %       Construção dos títulos das seções, respeitando a hierarquia da formatação das seções.
 %    \begin{macrocode}
 \renewcommand\section{%
+  \if@twoside%
+    \cleardoublepage%
+  \fi% 
   \@startsection{section}{1}{\z@}%
   {\z@}%
   {12pt}%
@@ -645,7 +735,11 @@
 %       Configuração dos elementos pós-textuais.
 %     \begin{macrocode}
 \newcommand\backtext{%
+  \if@twocolumn%
+  \onecolumn
+  \fi
   \frenchspacing%
+  %\bibliographystyle{abnt}%
   \bibliographystyle{unsrt}%
   \pagestyle{myheadings}%
   %\linespread{1.0}% TODO: necessario colocar \selectfont ou usar antes do \begin{document}

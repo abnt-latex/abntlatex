@@ -136,7 +136,7 @@ case ${MODE} in
         exec_pdflatex --interaction=batchmode --draftmode
         exec_bibtex
         exec_pdflatex --interaction=batchmode --draftmode
-        exec_pdflatex --interaction=nonstopmode | simplify_output
+        exec_pdflatex #--interaction=nonstopmode | simplify_output
         ;;
     simple)
         exec_pdflatex --interaction=nonstopmode | simplify_output

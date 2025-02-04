@@ -11,7 +11,7 @@ makeindex -s gglo.ist -o $FILE.gls $FILE.glo
 pdflatex $FILE.dtx
 pdflatex $FILE.dtx
 
-rm examples/canonical-model/abntlatex.cls
+rm -f examples/canonical-model/abntlatex.cls
 cp abntlatex.cls examples/canonical-model
 
 cd examples
