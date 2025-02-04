@@ -310,6 +310,9 @@
         \expandafter\@split%
     \fi%
 }
+
+\newif\if@changetoonecolumn
+\@changetoonecolumnfalse
 %    \end{macrocode}
 %     \end{macro}
 %
@@ -318,6 +321,10 @@
 %       Configurações pré-texto.
 %    \begin{macrocode}
 \newcommand\pretext{%
+  \if@twocolumn%
+    \onecolumn%
+    \@changetoonecolumntrue
+  \fi
   \frenchspacing%
   \pagenumbering{roman}%
   \pagestyle{empty}%
@@ -582,6 +589,9 @@
 %       Configuração dos elementos textuais.
 %    \begin{macrocode}
 \newcommand\maintext{%
+  \if@changetoonecolumn
+    \twocolumn
+  \fi
   \frenchspacing%
   \pagenumbering{arabic}%
   \pagestyle{myheadings}%
@@ -607,6 +617,9 @@
 %       Construção dos títulos das seções, respeitando a hierarquia da formatação das seções.
 %    \begin{macrocode}
 \renewcommand\section{%
+  \if@twoside%
+    \cleardoublepage%
+  \fi% 
   \@startsection{section}{1}{\z@}%
   {\z@}%
   {12pt}%
@@ -645,6 +658,9 @@
 %       Configuração dos elementos pós-textuais.
 %     \begin{macrocode}
 \newcommand\backtext{%
+  \if@twocolumn%
+  \onecolumn
+  \fi
   \frenchspacing%
   \bibliographystyle{unsrt}%
   \pagestyle{myheadings}%
