@@ -374,55 +374,65 @@
 %     \end{macro}
 %     \end{macro}
 %
-%     \begin{macro}{\maketitle}
-%       Construção da capa, realiza a remoção da numeração da pagina, centralização horizontal do conteúdo e o título e subtítulo são centralizados verticalmente no meio da pagina independente das informações que o precede, utilizando uma \textbf{minipage}. \todo{Pode acabar ficando sobrescrito pelos autores. Para a adição dos autores foi utilizada uma tabela.}
+%     \begin{macro}{\cover}
+%       Construção da capa, realiza a remoção da numeração da pagina, centralização horizontal do conteúdo e o título e subtítulo são centralizados verticalmente no meio da pagina independente das informações que o precede, utilizando um ambiente \textbf{minipage}. \todo{Pode acabar ficando sobrescrito pelos autores. Para a adição dos autores foi utilizada uma tabela.}
 %    \begin{macrocode}
 \renewcommand{\@maketitle}{%
+  \newpage%
+  \null%
+  \vskip 2em%
   \begin{center}%
     \begin{minipage}[t][0.5\textheight]{\textwidth}%
       \centering
-      { \ifdefined\@university%
+      {\ifdefined\@university% Opcional
           \large\@university\par
         \fi
       }%
       \vspace*{2cm}%
+      \let\footnote\thanks%
       {\large\begin{tabular}[t]{c}%
-        \@author%
+        \@author% Obrigatorio
       \end{tabular}\par}%
         
       \vspace*{\fill}%
-      {\LARGE\@title\par}%
-      { \ifdefined\@subtitle%
-          \large\@subtitle\par
+      {\LARGE\@title}% Obrigatorio
+      {\ifdefined\@subtitle%
+        {\LARGE:\par}{\large\@subtitle\par}% Opcional
         \fi
       }%
     \end{minipage}%
 
     \vspace*{\fill}%
-    { \ifdefined\@predate%
-        \normalsize\@predate\par
-      \fi
-    }%
-    {\normalsize\@date}%
+    {\normalsize\@predate\par}% Obrigatorio
+    {\normalsize\@date}% Obrigatorio
   \end{center}%
+  \par\vskip 1.5em%
 }
 
 \let\mymaketitle\maketitle
 \renewcommand{\maketitle}{
-    \renewcommand{\thepage}{Cover}%
-    \mymaketitle%
-    \thispagestyle{empty}%
-    \newpage%
-    \pagenumbering{roman}%
+  \let\save@author\@author%
+  \let\save@title\@title%
+  \renewcommand{\thepage}{Cover}%
+  \mymaketitle%
+  \thispagestyle{empty}%
+  \cleardoublepage%
+  \pagenumbering{roman}%
+  \let\@title\save@title%
+  \let\@author\save@author%
 }
+
+\let\cover\maketitle
 %    \end{macrocode}
 %     \end{macro}
 %
-%     \begin{macro}{\coverpage}
-%       Construção da folha de rosto, realiza a remoção da numeração da pagina, centralização horizontal do conteúdo e desloca as informações do preambulo, tipo de documento e universidade para a direita sem que o texto exceda o centro da pagina.
+%     \begin{macro}{\backcover}
+%       Construção da folha de rosto, realiza a remoção da numeração da pagina, centralização horizontal do conteúdo e desloca as informações do preâmbulo, tipo de documento e universidade para a direita sem que o texto exceda o centro da pagina.
 %    \begin{macrocode}
-\newcommand{\coverpage}{%
-  %\renewcommand{\thepage}{Back Cover}%
+\newcommand{\@backcover}{%
+  \newpage%
+  \null%
+  \vskip 2em%
   \begin{center}%
     \begin{minipage}[t][0.33\textheight]{\textwidth}%
       \centering%
@@ -432,7 +442,7 @@
       \vspace*{\fill}%
 
       {\LARGE\@title\par}%
-      { \ifdefined\@subtitle%
+      {\ifdefined\@subtitle%
           \large\@subtitle\par
         \fi
       }%
@@ -442,15 +452,15 @@
     {\hspace{.45\textwidth}
     \begin{minipage}[c]{0.5\textwidth}%
       \linespread{1.0}%
-      { \ifdefined\@documenttype
+      {\ifdefined\@documenttype
           \small\@documenttype\par
         \fi
       }%
-      { \ifdefined\@preamble
+      {\ifdefined\@preamble
           \small\@preamble\par
         \fi
       }%
-      { \ifdefined\@university
+      {\ifdefined\@university
           \small\@university\par
         \fi
       }%
@@ -458,22 +468,44 @@
     \end{minipage}\par}%
     \vspace*{\fill}%
 
-    { \ifdefined\@supervisor%
+    {\ifdefined\@supervisor%
         \normalsize Orientador: \@supervisor \par
       \fi
     }%
-    { \ifdefined\@cosupervisor%
+    {\ifdefined\@cosupervisor%
         \normalsize Coorientador: \@cosupervisor \par
       \fi
     }%
     \vspace*{\fill}%
 
-    { \ifdefined\@predate%
+    {\ifdefined\@predate%
         \normalsize\@predate\par
       \fi
     }%
     {\normalsize\@date}%
   \end{center}%
+  \par\vskip 1.5em%
+}
+
+\newcommand{\backcover}{%
+  %\renewcommand{\thepage}{Back Cover}%
+  \if@twocolumn
+    \ifnum\col@number=\@ne 
+      \@backcover 
+    \else 
+      \twocolumn [ \@backcover ]
+    \fi 
+  \else 
+    \newpage\@backcover 
+  \fi
+  \thispagestyle{empty}%
+  \newpage%
+  \pagenumbering{roman}%
+}
+
+%    \end{macrocode}
+%     \end{macro}
+%
   \newpage%
 }
 %    \end{macrocode}
