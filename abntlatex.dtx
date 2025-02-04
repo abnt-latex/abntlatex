@@ -506,7 +506,52 @@
 %    \end{macrocode}
 %     \end{macro}
 %
+%     \begin{macro}{\intercatalog}
+%     Template para os Dados Internacionais de Catalogação na Publicação.
+%    \begin{macrocode}
+\newcommand{\@intercatalog}{%
   \newpage%
+  \null%
+  \vskip 2em%
+  \vspace*{\fill}%
+  \begin{center}
+  \begin{minipage}{0.8\linewidth}
+  \begin{center}
+    \textbf{\large Dados Internacionais de Catalogação na Publicação (CIP)}\par
+    \textbf{\large (Câmera Brasileira do Livro, SP - Brasil)}
+    \vskip 1em%
+    \framebox{\begin{minipage}{0.8\linewidth}\vskip 0.25em%
+      \begin{center}\begin{minipage}{0.8\linewidth}
+        \@title, \@author\par
+        \setlength\parindent{24pt}
+        Nononononononono: nonononononnonon / nononononononon. -- 1. ed. -- Nononononononon: Nonononononononononon, 2022.\par\setlength{\parskip}{12pt}
+        ISBN: 000-00-00000-00-0\par
+        1. Nononononononono
+      \end{minipage}\end{center}
+      00-00000\hfill CDD-000.0
+    \end{minipage}}
+    \vskip 1em%
+    \textbf{Índices para catálogo sistemático:}
+  \end{center}
+  XXXXXXX XXXXXXXX XXX\hfill CRB-XXXXXXXXXXXXX
+  \end{minipage}
+  \end{center}
+  \par\vskip 1.5em%
+}
+
+\newcommand{\intercatalog}{%
+  \if@twocolumn
+    \ifnum\col@number=\@ne 
+      \@intercatalog 
+    \else 
+      \twocolumn [ \@intercatalog ]
+    \fi 
+  \else 
+    \newpage\@intercatalog 
+  \fi
+  \thispagestyle{empty}%
+  \newpage%
+  \pagenumbering{roman}%
 }
 %    \end{macrocode}
 %     \end{macro}
