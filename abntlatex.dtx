@@ -556,12 +556,12 @@
 %    \end{macrocode}
 %     \end{macro}
 %
-%     \begin{environment}{abstract (env)}
+%     \begin{environment}{abstract}
 %       Construção do resumo, realiza a centralização horizontal do título, além de adicionar um campo para as palavras-chave.
 %    \begin{macrocode}
 \renewenvironment{abstract}{%
   \begin{center}%
-    \textbf{\Large\abstractname\vspace{\z@}}%
+    \section*{\abstractname\vspace{\z@}}
   \end{center}%
 }{%
   {\par\null\par\noindent\textbf{Palavras-chave: }}%
