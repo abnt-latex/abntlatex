@@ -559,13 +559,39 @@
 %     \begin{environment}{abstract}
 %       Construção do resumo, realiza a centralização horizontal do título, além de adicionar um campo para as palavras-chave.
 %    \begin{macrocode}
-\renewenvironment{abstract}{%
+%\gdef\@keywordname{Palavras-chave}
+\newcommand*{\keywordname}[1]{\gdef\@keywordname{#1}}%
+\renewenvironment{abstract}[1][br]{%
+  \begingroup
+    \def\@tempa{#1}
+    \def\@tempb{br}
+    \ifx\@tempa\@tempb%
+      \keywordname{Palavras-chave}
+      \gdef\abstractname{Resumo}
+    \else
+      \keywordname{Keyword}
+      \gdef\abstractname{Abstract}
+    \fi
+  \endgroup
   \begin{center}%
     \section*{\abstractname\vspace{\z@}}
   \end{center}%
 }{%
-  {\par\null\par\noindent\textbf{Palavras-chave: }}%
+  {\par\null\par\noindent\textbf{\@keywordname: }}%
   \splittext[;]{\@keywords}
+\newpage%
+}
+%    \end{macrocode}
+%     \end{environment}
+%
+%     \begin{environment}{page}
+%     Construção de ambientes que ocupam a página por completo e devido ao uso do \verb|section| sempre está na direita usando o parâmetro \verb|twoside|
+%    \begin{macrocode}
+\newenvironment{page}[1][Página]{%
+  \begin{center}%
+    \section*{#1}
+  \end{center}%
+}{%
 \newpage%
 }
 %    \end{macrocode}
@@ -580,19 +606,23 @@
   \renewcommand{\listfigurename}{{Lista de Ilustrações}}%
 }%
 
-\renewcommand\listoffigures{%
-  {\centering\section*{\listfigurename}}%
+\def\caption@mynumberline#1{
+  \hb@xt@ \@tempdima {\figurename~#1\hfil\textendash\hfil}
+}
 
-  {%
-    %\let\oldnumberline\numberline% TODO: Corrigir o aviso
-    %\renewcommand{\numberline}[1]{\figurename~\oldnumberline{%
-    %  #1\hfill\textendash\hfill}%
-    %}%
+\renewcommand{\listoffigures}{%
+  {\centering\section*{\listfigurename}}
+  \@mkboth 
+    {\MakeUppercase \listfigurename }
+    {\MakeUppercase \listfigurename }
+  \begingroup
+    \let\numberline\caption@mynumberline
     \@starttoc{lof}%
-  }%
+  \endgroup
   \newpage
 }
-\renewcommand*\l@figure[2]{\@dottedtocline{1}{\z@}{2.3em}{#1}{#2}}%
+
+\renewcommand*\l@figure[2]{\@dottedtocline{1}{\z@}{5em}{#1}{#2}}%
 %    \end{macrocode}
 %     \end{macro}
 %     \end{macro}
@@ -602,14 +632,19 @@
 %       Construção da lista de tabelas.
 %
 %    \begin{macrocode}
-\renewcommand\listoftables{%
-  {\centering\section*{\listtablename}}%
+\def\table@mynumberline#1{
+  \hb@xt@ \@tempdima {\listtablename~#1\hfil\textendash\hfil}
+}
 
-  {%
-  %  \let\oldnumberline\numberline% TODO: Corrigir o aviso
-  %  \renewcommand\numberline[1]{\tablename~{#1\hfill\textendash\hfill}}%
-    \@starttoc{lot}%
-  }%
+\renewcommand\listoftables{%
+  {\centering\section*{\listtablename}}
+  \@mkboth 
+    {\MakeUppercase \listtablename }
+    {\MakeUppercase \listtablename }
+  \begingroup
+    \let\numberline\table@mynumberline
+    \@starttoc{lof}%
+  \endgroup
   \newpage
 }
 \renewcommand*\l@table[2]{\@dottedtocline{1}{\z@}{2.3em}{#1}{#2}}%
