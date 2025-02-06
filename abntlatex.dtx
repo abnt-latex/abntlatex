@@ -49,7 +49,9 @@
 % \iffalse
 %
 %<*class>
-\PassOptionsToClass{a4paper, 12pt}{article}%
+\PassOptionsToClass{
+  a4paper, % Se impresso o documento deve estar no formato a4
+  12pt}{article}%
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessOptions\relax
 \LoadClass{article}
@@ -246,8 +248,8 @@
 %   \DescribeEnv{abstract}
 %     Resumo na língua vernácula conforme a NBR 14724/2011 e a NBR6028/2021, é possível utilizar o comando |\keywords|\marg{text} para configurar as palavras-chave do documento.
 %
-%   \DescribeMacro{\fontfigure}
-%     Comando para auxiliar na implementação da fonte de figuras, conforme a NBR 14724/2011, |\fontfigure|\marg{text}, adicionando o conteúdo em tamanho reduzido, e o texto "\textit{Fonte:\space}", como é possível ver no exemplo:
+%   \DescribeMacro{\descrfigure}
+%     Comando para auxiliar na implementação da fonte de figuras, conforme a NBR 14724/2011, |\descrfigure|\marg{text}, adicionando o conteúdo em tamanho reduzido, e o texto "\textit{Fonte:\space}", como é possível ver no exemplo:
 %
 %   \DescribeMacro{\listoffigures}
 %     Lista de ilustrações conforme a NBR 14724/2011.
@@ -313,6 +315,16 @@
 
 \newif\if@changetoonecolumn
 \@changetoonecolumnfalse
+
+\@ifpackageloaded{setspace}{
+    \relax
+}{
+  \def\setstretch#1{
+    \def\baselinestretch{#1}\@currsize\vskip\baselineskip
+  }
+}
+
+
 %    \end{macrocode}
 %     \end{macro}
 %
@@ -326,9 +338,9 @@
     \@changetoonecolumntrue
   \fi
   \frenchspacing%
-  \pagenumbering{roman}%
+  \pagenumbering{arabic}%
   \pagestyle{empty}%
-  %\linespread{1.25}% TODO: necessario colocar \selectfont ou usar antes do \begin{document}
+  \setstretch{1.5}%
 }
 %    \end{macrocode}
 %     \end{macro}
@@ -385,6 +397,7 @@
     \begin{minipage}[t][0.5\textheight]{\textwidth}%
       \centering
       {\ifdefined\@university% Opcional
+          \setstretch{1}%
           \large\@university\par
         \fi
       }%
@@ -417,7 +430,7 @@
   \mymaketitle%
   \thispagestyle{empty}%
   \cleardoublepage%
-  \pagenumbering{roman}%
+  \pagenumbering{arabic}%
   \let\@title\save@title%
   \let\@author\save@author%
 }
@@ -449,9 +462,9 @@
     \end{minipage}
     \vspace*{\fill}%
       
-    {\hspace{.45\textwidth}
+    {\raggedleft
     \begin{minipage}[c]{0.5\textwidth}%
-      \linespread{1.0}%
+      \setstretch{1}%
       {\ifdefined\@documenttype
           \small\@documenttype\par
         \fi
@@ -500,7 +513,6 @@
   \fi
   \thispagestyle{empty}%
   \newpage%
-  \pagenumbering{roman}%
 }
 
 %    \end{macrocode}
@@ -549,9 +561,12 @@
   \else 
     \newpage\@intercatalog 
   \fi
+  \let\actualpagenumering\thepage
+  \pagenumbering{gobble}%
   \thispagestyle{empty}%
   \newpage%
-  \pagenumbering{roman}%
+  \pagenumbering{arabic}
+  \setcounter{page}{\numexpr\actualpagenumering+1\relax}
 }
 %    \end{macrocode}
 %     \end{macro}
@@ -607,7 +622,7 @@
 }%
 
 \def\caption@mynumberline#1{
-  \hb@xt@ \@tempdima {\figurename~#1\hfil\textendash\hfil}
+  \hb@xt@ \@tempdima {\figurename~#1\hfil---\hfil}
 }
 
 \renewcommand{\listoffigures}{%
@@ -622,7 +637,7 @@
   \newpage
 }
 
-\renewcommand*\l@figure[2]{\@dottedtocline{1}{\z@}{5em}{#1}{#2}}%
+\renewcommand*\l@figure[2]{\@dottedtocline{1}{\z@}{5.5em}{#1}{#2}}%
 %    \end{macrocode}
 %     \end{macro}
 %     \end{macro}
@@ -633,7 +648,7 @@
 %
 %    \begin{macrocode}
 \def\table@mynumberline#1{
-  \hb@xt@ \@tempdima {\listtablename~#1\hfil\textendash\hfil}
+  \hb@xt@ \@tempdima {\listtablename~#1\hfil---\hfil}
 }
 
 \renewcommand\listoftables{%
@@ -647,7 +662,7 @@
   \endgroup
   \newpage
 }
-\renewcommand*\l@table[2]{\@dottedtocline{1}{\z@}{2.3em}{#1}{#2}}%
+\renewcommand*\l@table[2]{\@dottedtocline{1}{\z@}{5.5em}{#1}{#2}}%
 %    \end{macrocode}
 %     \end{macro}
 %     \end{macro}
@@ -658,6 +673,7 @@
 %     \begin{macro}{\l@subsubsection}
 %     \begin{macro}{\@tocrmarg}
 %       Construção do sumário.
+%       Para documentos no meio eletrônico, recomenda-se a utilização de hyperlink para cada link elencado.
 %       \begin{itemize}
 %         \item[--] \todo{Arrumar o espaçamento de quando ocorre a quebra de linha.}
 %         \item[--] \todo{Ajustar o espaçamento dos pontos.}
@@ -681,13 +697,13 @@
 %       Configura as linhas do sumário respeitando a hierarquia da formatação das seções.
 %    \begin{macrocode}
 \renewcommand*\l@section[2]{\@dottedtocline{1}{\z@}%
-  {\@sizecontentnumber}{\bfseries\slshape#1}{#2}%
+  {\@sizecontentnumber}{\@section@style#1}{#2}%
 }%
 \renewcommand*\l@subsection[2]{\@dottedtocline{1}{\z@}%
-  {\@sizecontentnumber}{\bfseries#1}{#2}%
+  {\@sizecontentnumber}{\@subsection@style#1}{#2}%
 }%
 \renewcommand*\l@subsubsection[2]{\@dottedtocline{1}{\z@}%
-  {\@sizecontentnumber}{#1}{#2}%
+  {\@sizecontentnumber}{\@subsubsection@style#1}{#2}%
 }%
 %    \end{macrocode}
 %     \end{macro}
@@ -705,9 +721,8 @@
     \twocolumn
   \fi
   \frenchspacing%
-  \pagenumbering{arabic}%
   \pagestyle{myheadings}%
-  %\linespread{1.25}% TODO: necessario colocar \selectfont ou usar antes do \begin{document}
+  \setstretch{1.5}
 }
 %    \end{macrocode}
 %     \end{macro}
@@ -727,7 +742,17 @@
 %     \begin{macro}{\subsection}
 %     \begin{macro}{\subsubsection}
 %       Construção dos títulos das seções, respeitando a hierarquia da formatação das seções.
+%       NBR 6024: Podem ser utilizados os recursos gráficos de maiúscula, negrito, itálico ou sublinhado e outros.
 %    \begin{macrocode}
+\gdef\@section@style{\slshape\bfseries}
+\newcommand*{\sectionsty}[1]{\gdef\@section@style{#1}}%
+
+\gdef\@subsection@style{\bfseries}
+\newcommand*{\subsectionsty}[1]{\gdef\@subsection@style{#1}}%
+
+\gdef\@subsubsection@style{}
+\newcommand*{\subsubsectionsty}[1]{\gdef\@subsubsection@style{#1}}%
+
 \renewcommand\section{%
   \if@twoside%
     \cleardoublepage%
@@ -735,7 +760,7 @@
   \@startsection{section}{1}{\z@}%
   {\z@}%
   {12pt}%
-  {\normalfont\Large\bfseries\slshape}%
+  {\normalfont\Large\@section@style}%
 }
 %    \end{macrocode}
 %    \begin{macrocode}
@@ -743,7 +768,7 @@
   \@startsection{subsection}{2}{\z@}%
   {-12pt}%
   {12pt}%
-  {\normalfont\large\bfseries}%
+  {\normalfont\large\@subsection@style}%
 }
 %    \end{macrocode}
 %    \begin{macrocode}
@@ -751,16 +776,23 @@
   \@startsection{subsubsection}{3}{\z@}%
   {-12pt}%
   {12pt}%
-  {\normalfont\large}%
+  {\normalfont\large\@subsubsection@style}%
 }
 %    \end{macrocode}
 %     \end{macro}
 %     \end{macro}
 %     \end{macro}
 %
-%     \begin{macro}{\fontfigure}
+%     \begin{macro}{\descrfigure}
+%\todo{Alterar a separação entre tipo da figure e título}
 %    \begin{macrocode}
-\newcommand\fontfigure[1]{\caption*{\small Fonte: #1}}
+\let\save@figure\figure
+\def\figure{\setstretch{1.0}\centering\@ifnextchar[\figure@i \figure@ii}
+\def\figure@i[#1]{\save@figure[#1]\centering}
+\def\figure@ii{\save@figure\centering}
+
+\newcommand\descrfigure[2][\@empty]{%
+\caption*{\small \ifx#1\@empty\relax\else#1:~\fi#2}}
 %    \end{macrocode}
 %     \end{macro}
 %
@@ -777,7 +809,7 @@
   %\bibliographystyle{abnt}%
   \bibliographystyle{unsrt}%
   \pagestyle{myheadings}%
-  %\linespread{1.0}% TODO: necessario colocar \selectfont ou usar antes do \begin{document}
+  \setstretch{1}
 }
 %    \end{macrocode}
 %     \end{macro}
