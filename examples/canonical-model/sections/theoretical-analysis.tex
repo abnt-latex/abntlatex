@@ -1,13 +1,13 @@
-\section{Análise teórica do passa-baixas}
+\section{Análise teórica do passa-baixas}\label{sec:analise-teorica-do-passa-baixas}
   Como apresentado previamente, os filtros passa-baixas tem como característica a capacidade de atenuar sinais com frequências grandes, acima de uma frequência linear de corte, $f_c$ ou frequência angular de corte, $\omega_c$, definidas. Uma topologia indicada para se utilizar é a de um circuito RC de resistor em série com um capacitor em que a saída de tensão do circuito ocorre sobre o capacitor.
 
   Considerando o circuito RC série com a saída sobre o capacitor, $v_{out}$, dado na figura \ref{fig:esquematico_passa_baixas}, em regime permanente senoidal (RPS), alimentado por um gerador ideal senoidal, $v_{in}$.
 
   \begin{figure}[H]
-    \centering
     \caption{Esquemático de um circuito passa-baixas}
     \includegraphics[width = 0.6 \linewidth]{passa-baixas.pdf}
-    \fontfigure{Elaboração Própria (Kicad)(\the\year)}
+    \descrfigure[Fonte]{Elaboração Própria (\the\year)}%
+    \descrfigure[Nota]{Desenvolvido no programa Kicad}
     \label{fig:esquematico_passa_baixas}
   \end{figure}
 
@@ -51,7 +51,6 @@
   A partir da expressão, \ref{eq:ganho_passa_baixas}, obtida é possível construir os gráficos, apresentados na figura \ref{fig:grafico_passa_baixas}, que apresentam o valor em módulo e da fase de $G(j\omega)$ em função da frequência angular, $\omega$, analisando os gráficos é possível reconhecer e calcular pontos importantes da curva, como os pontos para que $|G(j0)| = 1$ para $\omega = 0$, que $ \lim_{\omega\to\infty} |G(j\omega)| = 0$ e $|G(j \omega)| = \frac{1}{\sqrt{2}}$, para $\omega = \frac{1}{RC}$, que indica o momento em que a potência média de saída cai pela metade de seu valor máximo, sendo o momento onde ocorre a frequência de corte, logo $\omega_c = \frac{1}{RC}$.
 
   \begin{figure}[H]
-    \centering
     \caption{Gráficos do circuito passa-baixas, módulo e fase, respectivamente}
     \begin{subfigure}{0.5 \linewidth}
       \includegraphics[width = \linewidth]{plot-0.pdf}
@@ -59,7 +58,7 @@
     \begin{subfigure}{0.5 \linewidth}
       \includegraphics[width = \linewidth]{plot-1.pdf}
     \end{subfigure}
-    \fontfigure{Elaboração Própria (\the\year)}
+    \descrfigure{Elaboração Própria (\the\year)}
     \label{fig:grafico_passa_baixas}
   \end{figure}
 
