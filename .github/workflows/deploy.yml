@@ -1,0 +1,70 @@
+name: Build Documentation and Examples
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build Documentation and Examples
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/abnt-latex/texlive-r:latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v5
+
+      - name: Instalar pacotes extras (se necessário)
+        run: |
+          tlmgr install multibib
+          tlmgr install steinmetz
+
+      - name: Compilar os arquivos dentro do Docker
+        run: |
+          cd $GITHUB_WORKSPACE
+          ./build.sh
+          mkdir -p output
+          cp abntlatex.pdf output/
+          cp abntlatex.cls output/
+          cp examples/canonical-model/model.pdf output/
+
+      - name: Gerar index.html para listagem de arquivos
+        run: |
+          cd $GITHUB_WORKSPACE
+          echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>Arquivos</title></head><body><h1>Arquivos</h1><ul>" > output/index.html
+          for f in output/*.*; do
+            fname=$(basename "$f")
+            echo "<li><a href='$fname'>$fname</a></li>" >> output/index.html
+          done
+          echo "</ul></body></html>" >> output/index.html
+
+      - name: Ajustar permissões
+        run: chmod -R a+rwX $GITHUB_WORKSPACE
+
+      - name: Listar arquivos no repositório e Verificar PDF
+        run: |
+          ls -al $GITHUB_WORKSPACE
+          ls -al $GITHUB_WORKSPACE/output
+
+      - name: Carregar arquivos estáticos como artefato
+        id: deployment
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: output
+
+  deploy:
+    if: ${{ github.repository_visibility == 'public' }}
+    name: Deploy no GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy no GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
