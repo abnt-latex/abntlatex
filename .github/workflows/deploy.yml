@@ -29,6 +29,16 @@ jobs:
           cp abntlatex.cls output/
           cp examples/canonical-model/model.pdf output/
 
+      - name: Gerar index.html para listagem de arquivos
+        run: |
+          cd $GITHUB_WORKSPACE
+          echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>Arquivos</title></head><body><h1>Arquivos</h1><ul>" > output/index.html
+          for f in output/*.*; do
+            fname=$(basename "$f")
+            echo "<li><a href='$fname'>$fname</a></li>" >> output/index.html
+          done
+          echo "</ul></body></html>" >> output/index.html
+
       - name: Ajustar permissões
         run: chmod -R a+rwX $GITHUB_WORKSPACE
 
