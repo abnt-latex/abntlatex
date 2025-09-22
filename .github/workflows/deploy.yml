@@ -20,9 +20,9 @@ jobs:
 
       - name: Instalar pacotes temporariamente
         run: |
-          mkdir -p $TEXMFHOME/tex/latex/multibib
+          mkdir -p $TEXMFHOME/tex/latex
           wget -O multibib.zip http://mirrors.ctan.org/macros/latex/contrib/multibib.zip
-          unzip multibib.zip -d $TEXMFHOME/tex/latex/multibib
+          unzip multibib.zip -d $TEXMFHOME/tex/latex
 
       - name: Tornar build.sh executável
         run: chmod +x build.sh
