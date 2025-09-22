@@ -22,7 +22,6 @@ jobs:
           wget http://mirrors.ctan.org/macros/latex/contrib/multibib.zip
           unzip multibib.zip -d /tmp/texmf/tex/latex/multibib
           export TEXMFHOME=/tmp/texmf:$TEXMFHOME
-          mktexlsr /tmp/texmf
       - name: Make build.sh executable
         run: chmod +x build.sh
       - name: Compilando os arquivos na Docker
