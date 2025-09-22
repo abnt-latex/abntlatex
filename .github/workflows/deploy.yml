@@ -23,41 +23,6 @@ jobs:
       - name: Checkout do código
         uses: actions/checkout@v5
 
-<<<<<<< HEAD
-      - name: Instalar pacotes temporariamente
-        run: |
-          mkdir -p $TEXMFHOME/tex/latex
-          wget -O multibib.zip http://mirrors.ctan.org/macros/latex/contrib/multibib.zip
-          unzip multibib.zip -d $TEXMFHOME/tex/latex
-          cd $TEXMFHOME/tex/latex/multibib
-          latex multibib.ins
-
-      - name: Tornar build.sh executável
-        run: chmod +x build.sh
-
-      - name: Compilar os arquivos dentro do Docker
-        run: |
-          docker run --rm \
-            -v ${{ github.workspace }}/:/content \
-            -e TEXMFHOME=$TEXMFHOME \
-            --workdir /content \
-            ${{ env.TAG }}:${{ env.VERSION }} \
-            bash -c "./build.sh"
-
-      - name: Criar pasta de saída
-        run: mkdir -p output
-
-      - name: Copiar PDF gerado
-        run: cp abntlatex.pdf output/
-
-      - name: Listar arquivos no repositório
-        run: |
-          ls -al ${{ github.workspace }}
-          ls -al ${{ github.workspace }}/output
-
-      - name: Verificar PDF
-        run: file output/abntlatex.pdf | grep -q 'PDF'
-=======
       - name: Instalar pacotes extras (se necessário)
         run: |
           tlmgr install multibib
@@ -89,7 +54,6 @@ jobs:
         run: |
           ls -al $GITHUB_WORKSPACE
           ls -al $GITHUB_WORKSPACE/output
->>>>>>> main
 
       - name: Carregar arquivos estáticos como artefato
         id: deployment
