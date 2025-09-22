@@ -1,6 +1,13 @@
 #!/bin/bash
 set -e
 
+tlmgr info multibib > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+
+else
+    tlmgr install multibib
+fi
+
 FILE=${1:-"abntlatex"}
 
 latex abntlatex.ins
