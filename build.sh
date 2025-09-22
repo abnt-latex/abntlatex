@@ -1,15 +1,6 @@
 #!/bin/bash
 set -ex
 
-echo ">>> Verificando pacotes..."
-if tlmgr info multibib >/dev/null 2>&1; then
-    echo "multibib listado no tlmgr"
-else
-    curl -L -o multibib.zip http://mirrors.ctan.org/macros/latex/contrib/multibib.zip
-    unzip multibib.zip -d /usr/local/texlive/texmf-local/tex/latex/multibib
-    mktexlsr
-fi
-
 FILE=${1:-"abntlatex"}
 
 echo ">>> Rodando latex abntlatex.ins"

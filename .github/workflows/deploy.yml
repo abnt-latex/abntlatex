@@ -16,6 +16,15 @@ jobs:
     steps:
       - name: Confira o código do repositório
         uses: actions/checkout@v5
+      - name: Instalar pacotes temporariamente
+        run: |
+          apt-get update && apt-get install -y wget unzip
+          wget http://mirrors.ctan.org/macros/latex/contrib/multibib.zip
+          unzip multibib.zip -d /usr/local/texlive/texmf-local/tex/latex/multibib
+          mktexlsr
+          apt-get remove -y wget unzip
+          apt-get autoremove -y
+          rm -rf /var/lib/apt/lists/* multibib.zip
       - name: Make build.sh executable
         run: chmod +x build.sh
       - name: Compilando os arquivos na Docker
