@@ -23,6 +23,8 @@ jobs:
           mkdir -p $TEXMFHOME/tex/latex
           wget -O multibib.zip http://mirrors.ctan.org/macros/latex/contrib/multibib.zip
           unzip multibib.zip -d $TEXMFHOME/tex/latex
+          cd $TEXMFHOME/tex/latex/multibib
+          latex multibib.ins
 
       - name: Tornar build.sh executável
         run: chmod +x build.sh
