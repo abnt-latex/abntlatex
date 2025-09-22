@@ -39,7 +39,7 @@ jobs:
         id: deployment
         uses: actions/upload-pages-artifact@v4
         with:
-          path: $GITHUB_WORKSPACE/output
+          path: output
 
   deploy:
     if: ${{ github.repository_visibility == 'public' }}
