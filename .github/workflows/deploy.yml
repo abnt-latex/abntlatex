@@ -5,36 +5,45 @@ on:
     branches:
       - main
 
-env:
-  TAG: ghcr.io/abnt-latex/texlive-r
-  VERSION: 1.0.3
-
 jobs:
   build:
     name: Build Documentation and Examples
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/abnt-latex/texlive-r:latest
     steps:
-      - name: Confira o código do repositório
+      - name: Checkout do código
         uses: actions/checkout@v5
-      - name: Compilando os arquivos na Docker
-        run: docker run --rm -v ${{ github.workspace }}/:/content --workdir /content --entrypoint ./build.sh ${{ env.TAG }}:${{ env.VERSION }}
-      - run: mkdir -p output
-      - run: cp abntlatex.pdf output/
-      - name: Listar arquivos dentro do repositório
+
+      - name: Instalar pacotes extras (se necessário)
         run: |
-          ls -a ${{ github.workspace }}
-          ls -a ${{ github.workspace }}/output
-      - name: Verficar arquivo pdf
+          tlmgr install multibib
+          tlmgr install steinmetz
+
+      - name: Compilar os arquivos dentro do Docker
         run: |
-          file output/abntlatex.pdf | grep -q ' PDF '
+          cd $GITHUB_WORKSPACE
+          ./build.sh
+          mkdir -p output
+          cp abntlatex.pdf output/
+
+      - name: Ajustar permissões
+        run: chmod -R a+rwX $GITHUB_WORKSPACE
+
+      - name: Listar arquivos no repositório e Verificar PDF
+        run: |
+          ls -al $GITHUB_WORKSPACE
+          ls -al $GITHUB_WORKSPACE/output
+
       - name: Carregar arquivos estáticos como artefato
         id: deployment
         uses: actions/upload-pages-artifact@v4
         with:
-          path: output
+          path: $GITHUB_WORKSPACE/output
+
   deploy:
     if: ${{ github.repository_visibility == 'public' }}
-    name: Deploy no Github Pages
+    name: Deploy no GitHub Pages
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -44,6 +53,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy no Github Pages
+      - name: Deploy no GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
