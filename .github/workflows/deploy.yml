@@ -5,19 +5,25 @@ on:
     branches:
       - main
 
+<<<<<<< HEAD
 env:
   TAG: ghcr.io/abnt-latex/texlive-r
   VERSION: latest
   TEXMFHOME: /tmp/texmf
 
+=======
+>>>>>>> main
 jobs:
   build:
     name: Build Documentation and Examples
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/abnt-latex/texlive-r:latest
     steps:
       - name: Checkout do código
         uses: actions/checkout@v5
 
+<<<<<<< HEAD
       - name: Instalar pacotes temporariamente
         run: |
           mkdir -p $TEXMFHOME/tex/latex
@@ -51,6 +57,39 @@ jobs:
 
       - name: Verificar PDF
         run: file output/abntlatex.pdf | grep -q 'PDF'
+=======
+      - name: Instalar pacotes extras (se necessário)
+        run: |
+          tlmgr install multibib
+          tlmgr install steinmetz
+
+      - name: Compilar os arquivos dentro do Docker
+        run: |
+          cd $GITHUB_WORKSPACE
+          ./build.sh
+          mkdir -p output
+          cp abntlatex.pdf output/
+          cp abntlatex.cls output/
+          cp examples/canonical-model/model.pdf output/
+
+      - name: Gerar index.html para listagem de arquivos
+        run: |
+          cd $GITHUB_WORKSPACE
+          echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>Arquivos</title></head><body><h1>Arquivos</h1><ul>" > output/index.html
+          for f in output/*.*; do
+            fname=$(basename "$f")
+            echo "<li><a href='$fname'>$fname</a></li>" >> output/index.html
+          done
+          echo "</ul></body></html>" >> output/index.html
+
+      - name: Ajustar permissões
+        run: chmod -R a+rwX $GITHUB_WORKSPACE
+
+      - name: Listar arquivos no repositório e Verificar PDF
+        run: |
+          ls -al $GITHUB_WORKSPACE
+          ls -al $GITHUB_WORKSPACE/output
+>>>>>>> main
 
       - name: Carregar arquivos estáticos como artefato
         id: deployment
