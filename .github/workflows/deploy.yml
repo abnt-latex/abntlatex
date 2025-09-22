@@ -15,40 +15,50 @@ jobs:
     name: Build Documentation and Examples
     runs-on: ubuntu-latest
     steps:
-      - name: Confira o código do repositório
+      - name: Checkout do código
         uses: actions/checkout@v5
+
       - name: Instalar pacotes temporariamente
         run: |
           mkdir -p $TEXMFHOME/tex/latex/multibib
-          wget http://mirrors.ctan.org/macros/latex/contrib/multibib.zip
+          wget -O multibib.zip http://mirrors.ctan.org/macros/latex/contrib/multibib.zip
           unzip multibib.zip -d $TEXMFHOME/tex/latex/multibib
-      - name: Make build.sh executable
+
+      - name: Tornar build.sh executável
         run: chmod +x build.sh
-      - name: Compilando os arquivos na Docker
+
+      - name: Compilar os arquivos dentro do Docker
         run: |
           docker run --rm \
             -v ${{ github.workspace }}/:/content \
             -e TEXMFHOME=$TEXMFHOME \
             --workdir /content \
-            --entrypoint ./build.sh \
-            ${{ env.TAG }}:${{ env.VERSION }}
-      - run: mkdir -p output
-      - run: cp abntlatex.pdf output/
-      - name: Listar arquivos dentro do repositório
+            ${{ env.TAG }}:${{ env.VERSION }} \
+            bash -c "./build.sh"
+
+      - name: Criar pasta de saída
+        run: mkdir -p output
+
+      - name: Copiar PDF gerado
+        run: cp abntlatex.pdf output/
+
+      - name: Listar arquivos no repositório
         run: |
-          ls -a ${{ github.workspace }}
-          ls -a ${{ github.workspace }}/output
-      - name: Verficar arquivo pdf
-        run: |
-          file output/abntlatex.pdf | grep -q ' PDF '
+          ls -al ${{ github.workspace }}
+          ls -al ${{ github.workspace }}/output
+
+      - name: Verificar PDF
+        run: file output/abntlatex.pdf | grep -q 'PDF'
+
       - name: Carregar arquivos estáticos como artefato
         id: deployment
         uses: actions/upload-pages-artifact@v4
         with:
           path: output
+
   deploy:
     if: ${{ github.repository_visibility == 'public' }}
-    name: Deploy no Github Pages
+    name: Deploy no GitHub Pages
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -58,6 +68,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy no Github Pages
+      - name: Deploy no GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
