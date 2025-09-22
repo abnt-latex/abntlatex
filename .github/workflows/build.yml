@@ -1,0 +1,48 @@
+name: Build Documentation and Examples
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  TAG: ghcr.io/abnt-latex/texlive-r
+  VERSION: 1.0.2
+
+jobs:
+  build:
+    name: Build Documentation and Examples
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Confira o código do repositório
+        uses: actions/checkout@v5
+      - name: Compilando os arquivos na Docker
+        run: docker run --rm -v ${{ github.workspace }}/:/content --workdir /content --entrypoint ./build.sh ${{ env.TAG }}:${{ env.VERSION }}
+      - run: mkdir -p output
+      - run: cp abntlatex.pdf output/
+      - name: Listar arquivos dentro do repositório
+        run: |
+          ls -a ${{ github.workspace }}
+          ls -a ${{ github.workspace }}/output
+      - name: Verficar arquivo pdf
+        run: |
+          file output/abntlatex.pdf | grep -q ' PDF '
+      - name: Carregar arquivos estáticos como artefato
+        id: deployment
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: output
+  deploy:
+    name: Deploy no Github Pages
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy no Github Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
