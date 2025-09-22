@@ -2,7 +2,8 @@ name: Build Documentation and Examples
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 env:
   TAG: ghcr.io/abnt-latex/texlive-r
@@ -11,7 +12,6 @@ env:
 jobs:
   build:
     name: Build Documentation and Examples
-    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Confira o código do repositório
@@ -33,6 +33,7 @@ jobs:
         with:
           path: output
   deploy:
+    if: ${{ github.repository_visibility == 'public' }}
     name: Deploy no Github Pages
     needs: build
     runs-on: ubuntu-latest
