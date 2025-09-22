@@ -18,6 +18,7 @@ jobs:
         uses: actions/checkout@v5
       - name: Instalar pacotes temporariamente
         run: |
+          mkdir -p /tmp/texmf/tex/latex/multibib
           apt-get update && apt-get install -y wget unzip
           wget http://mirrors.ctan.org/macros/latex/contrib/multibib.zip
           unzip multibib.zip -d /usr/local/texlive/texmf-local/tex/latex/multibib
