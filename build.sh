@@ -5,7 +5,7 @@ echo ">>> Verificando pacotes..."
 if tlmgr info multibib >/dev/null 2>&1; then
     echo "multibib listado no tlmgr"
 else
-    wget http://mirrors.ctan.org/macros/latex/contrib/multibib.zip
+    curl -L -o multibib.zip http://mirrors.ctan.org/macros/latex/contrib/multibib.zip
     unzip multibib.zip -d /usr/local/texlive/texmf-local/tex/latex/multibib
     mktexlsr
 fi
