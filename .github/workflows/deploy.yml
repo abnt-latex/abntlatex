@@ -8,6 +8,7 @@ on:
 env:
   TAG: ghcr.io/abnt-latex/texlive-r
   VERSION: latest
+  TEXMFHOME: /tmp/texmf
 
 jobs:
   build:
@@ -18,14 +19,19 @@ jobs:
         uses: actions/checkout@v5
       - name: Instalar pacotes temporariamente
         run: |
-          mkdir -p /tmp/texmf/tex/latex/multibib
+          mkdir -p $TEXMFHOME/tex/latex/multibib
           wget http://mirrors.ctan.org/macros/latex/contrib/multibib.zip
-          unzip multibib.zip -d /tmp/texmf/tex/latex/multibib
-          export TEXMFHOME=/tmp/texmf:$TEXMFHOME
+          unzip multibib.zip -d $TEXMFHOME/tex/latex/multibib
       - name: Make build.sh executable
         run: chmod +x build.sh
       - name: Compilando os arquivos na Docker
-        run: docker run --rm -v ${{ github.workspace }}/:/content --workdir /content --entrypoint ./build.sh ${{ env.TAG }}:${{ env.VERSION }}
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}/:/content \
+            -e TEXMFHOME=$TEXMFHOME \
+            --workdir /content \
+            --entrypoint ./build.sh \
+            ${{ env.TAG }}:${{ env.VERSION }}
       - run: mkdir -p output
       - run: cp abntlatex.pdf output/
       - name: Listar arquivos dentro do repositório
