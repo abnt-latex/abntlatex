@@ -26,6 +26,8 @@ jobs:
           ./build.sh
           mkdir -p output
           cp abntlatex.pdf output/
+          cp abntlatex.cls output/
+          cp examples/canonical-model/model.pdf output/
 
       - name: Ajustar permissões
         run: chmod -R a+rwX $GITHUB_WORKSPACE
