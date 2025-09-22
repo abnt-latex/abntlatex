@@ -1,6 +1,7 @@
 #!/bin/bash
-set -e
+set -ex
 
+echo ">>> Verificando pacotes..."
 tlmgr info multibib > /dev/null 2>&1
 if [ $? -eq 0 ]; then
     echo "multibib já instalado"

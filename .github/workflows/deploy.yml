@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Confira o código do repositório
         uses: actions/checkout@v5
+      - name: Make build.sh executable
+        run: chmod +x build.sh
       - name: Compilando os arquivos na Docker
         run: docker run --rm -v ${{ github.workspace }}/:/content --workdir /content --entrypoint ./build.sh ${{ env.TAG }}:${{ env.VERSION }}
       - run: mkdir -p output
