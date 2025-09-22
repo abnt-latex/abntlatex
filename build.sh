@@ -1,12 +1,18 @@
 #!/bin/bash
 set -ex
 
-echo ">>> Verificando pacotes..."
-if tlmgr info multibib >/dev/null 2>&1; then
-    echo "multibib listado no tlmgr"
+echo ">>> Verificando multibib..."
+
+if kpsewhich multibib.sty >/dev/null 2>&1; then
+    echo "multibib já está instalado."
 else
-    tlmgr install multibib
+    echo "multibib não encontrado, tentando instalar..."
+    
+    tlmgr option repository https://mirror.ctan.org/systems/texlive/tlnet
+    tlmgr update --self --all || true
+    tlmgr install multibib || echo "Não foi possível instalar multibib (mirror indisponível)."
 fi
+
 
 FILE=${1:-"abntlatex"}
 
