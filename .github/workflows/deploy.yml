@@ -23,7 +23,7 @@ jobs:
       - name: Compilar os arquivos dentro do Docker
         run: |
           cd $GITHUB_WORKSPACE
-          ./build.sh
+          ./scripts/build.sh
           mkdir -p output
           cp abntlatex.pdf output/
           cp abntlatex.cls output/
