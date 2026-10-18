@@ -26,7 +26,7 @@
   \listfiles
   \documentclass{ltxdoc}
   % Packages
-  \usepackage[brazilian]{babel}
+  \usepackage[main=brazilian]{babel}
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{xcolor}
@@ -576,26 +576,35 @@
 %     \begin{environment}{abstract}
 %       Construção do resumo, realiza a centralização horizontal do título, além de adicionar um campo para as palavras-chave.
 %    \begin{macrocode}
-%\gdef\@keywordname{Palavras-chave}
-\newcommand*{\keywordname}[1]{\gdef\@keywordname{#1}}%
-\renewenvironment{abstract}[1][br]{%
-  \begingroup
-    \def\@tempa{#1}
-    \def\@tempb{br}
-    \ifx\@tempa\@tempb%
-      \keywordname{Palavras-chave}
-      \gdef\abstractname{Resumo}
-    \else
-      \keywordname{Keyword}
-      \gdef\abstractname{Abstract}
-    \fi
-  \endgroup
-  \begin{center}%
-    \section*{\abstractname\vspace{\z@}}
-  \end{center}%
+\addto\captionsbrazilian{
+  \renewcommand{\abstractname}{Resumo}
+}
+\addto\captionsenglish{
+  \renewcommand{\abstractname}{Abstract}
+}
+
+\newcommand{\keywordname}{}
+\addto\captionsbrazilian{
+  \renewcommand{\keywordname}{Palavras-chave}
+}
+\addto\captionsenglish{
+  \renewcommand{\keywordname}{Keyword}
+}
+
+\renewenvironment{abstract}[1][brazilian]{%
+\begin{otherlanguage}{#1}
+\if@twocolumn%
+  \section*{\abstractname}
+\else%
+  \small\begin{center}
+    {\section*{\abstractname}\vspace{-.5em}\vspace{\z@}}
+  \end{center}
+  \quotation
+\fi
 }{%
-  {\par\null\par\noindent\textbf{\@keywordname: }}%
+  {\par\null\par\noindent\textbf{\keywordname: }}%
   \splittext[;]{\@keywords}
+\end{otherlanguage}
 \newpage%
 }
 %    \end{macrocode}
