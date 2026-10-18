@@ -817,8 +817,8 @@
   \onecolumn
   \fi
   \frenchspacing%
-  %\bibliographystyle{abnt}%
-  \bibliographystyle{unsrt}%
+  \bibliographystyle{abnt}%
+  % \bibliographystyle{unsrt}%
   \pagestyle{myheadings}%
   \setstretch{1}
 }
@@ -873,6 +873,41 @@
 %     \end{macro}
 %     \end{macro}
 %     \end{macro}
+%
+%     \begin{environment}{\appendixenv}
+%       Construção dos apêndices, realiza a configurações das seções, além de alterar o contador de páginas.
+%    \begin{macrocode}
+\addto\captionsbrazilian{
+  \renewcommand{\appendixname}{Apêndice}
+}
+\addto\captionsenglish{
+  \renewcommand{\appendixname}{Appendix}
+}
+
+\newenvironment{appendixenv}[1][default]{%
+  \pagestyle{plain}
+  \begingroup
+  \appendix
+  \cleardoublepage
+  \def\arg{#1}%
+  \def\default{default}%
+  \ifx\arg\default
+    \thispagestyle{empty}
+    \vspace*{\fill}
+    {%
+        \centering\part*{\centering\scshape\Huge\appendixname}%
+        \phantomsection%
+        \addcontentsline{toc}{chapter}{\protect\numberline{}\appendixname}%
+    }
+    \vspace*{\fill}
+  \fi
+  \pagenumbering{Roman}\newpage
+}{%
+  \endgroup
+  \newpage
+}
+%    \end{macrocode}
+%     \end{environment}
 %
 % \Finale
 \endinput % End of File.
