@@ -407,7 +407,7 @@
       \vspace*{\fill}%
       {\LARGE\@title}% Obrigatorio
       {\ifdefined\@subtitle%
-        {\LARGE:\par}{\large\@subtitle\par}% Opcional
+        {\LARGE:\par}{\Large\@subtitle\par}% Opcional
         \fi
       }%
     \end{minipage}%
@@ -456,9 +456,9 @@
       \end{tabular}\par}%
       \vspace*{\fill}%
 
-      {\LARGE\@title\par}%
+      {\LARGE\@title}%
       {\ifdefined\@subtitle%
-          \large\@subtitle\par
+          {\LARGE:\par}\Large\@subtitle\par
         \fi
       }%
     \end{minipage}
