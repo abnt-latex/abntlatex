@@ -413,7 +413,12 @@
     \end{minipage}%
 
     \vspace*{\fill}%
-    {\normalsize\@predate\par}% Obrigatorio
+    {\ifdefined\@predate
+        \normalsize\@predate\par%
+      \else
+        \ClassWarning{abntlatex}{\string\@predate\space Required element in ABNT standards for academic papers.}
+      \fi
+    }% Obrigatorio
     {\normalsize\@date}% Obrigatorio
   \end{center}%
   \par\vskip 1.5em%
